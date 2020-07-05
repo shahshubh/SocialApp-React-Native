@@ -10,6 +10,7 @@ import AllPostsScreen from '../screens/post/AllPostsScreen';
 import EditPostScreen from '../screens/post/EditPostScreen';
 import SinglePostScreen from '../screens/post/SinglePostScreen';
 import UserProfileScreen from '../screens/user/UserProfileScreen';
+import AuthScreen from '../screens/auth/AuthScreen';
 
 
 const defaultNavOptions = {
@@ -56,7 +57,7 @@ const UserStackNavigator = createStackNavigator();
 const UserNavigator = () => {
     return(
         <UserStackNavigator.Navigator
-            screenOption={defaultNavOptions}
+            screenOptions={defaultNavOptions}
         >
             <UserStackNavigator.Screen 
                 name="UserProfile"
@@ -65,6 +66,10 @@ const UserNavigator = () => {
         </UserStackNavigator.Navigator>
     );
 };
+
+
+
+
 
 
 
@@ -93,7 +98,7 @@ export const BottomNavigator = () => {
             />
             <BottomTabNavigator.Screen 
                 name="FindPeople"
-                component={PostNavigator}
+                component={AuthNavigator}
                 options={{
                     tabBarLabel: 'Find People',
                     tabBarIcon: (props) => (
@@ -139,3 +144,20 @@ export const BottomNavigator = () => {
         </BottomTabNavigator.Navigator>
     );
 };
+
+
+
+const AuthStackNavigator = createStackNavigator();
+
+const AuthNavigator = () => {
+    return(
+        <AuthStackNavigator.Navigator
+            screenOptions={defaultNavOptions}
+        >
+            <AuthStackNavigator.Screen 
+                name="Auth"
+                component={AuthScreen}
+            />
+        </AuthStackNavigator.Navigator>
+    );
+}

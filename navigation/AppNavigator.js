@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { BottomNavigator } from './SocialAppNavigator';
+import { BottomNavigator, AuthNavigator } from './SocialAppNavigator';
 
 import { useSelector } from 'react-redux';
 
@@ -16,7 +16,7 @@ const AppNavigator = props => {
     return(
         <NavigationContainer>
             { isAuth && <BottomNavigator /> }
-            { !isAuth && didTryAutoLogin && <AuthScreen />}
+            { !isAuth && didTryAutoLogin && <AuthNavigator />}
             { !isAuth && !didTryAutoLogin && <StartupScreen />}
         </NavigationContainer>
     );

@@ -9,13 +9,18 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AllPostsScreen from '../screens/post/AllPostsScreen';
 import EditPostScreen from '../screens/post/EditPostScreen';
 import SinglePostScreen from '../screens/post/SinglePostScreen';
+import CommentsScreen from '../screens/post/CommentsScreen';
+import ProfileScreen from '../screens/user/ProfileScreen';
 import UserProfileScreen from '../screens/user/UserProfileScreen';
-import AuthScreen from '../screens/auth/AuthScreen';
+import FindPeopleScreen from '../screens/user/FindPeopleScreen';
+
+import AuthScreen, {screenOptions as authScreenOptions} from '../screens/auth/AuthScreen';
+import ForgotPasswordScreen, {screenOptions as forgotPasswordScreenOptions} from '../screens/auth/ForgotPasswordScreen';
 
 
 const defaultNavOptions = {
     headerStyle: {
-        backgroundColor: Platform.OS === 'android' ? Colors.primary : ''
+        backgroundColor: Platform.OS === 'android' ? Colors.brightBlue : ''
     },
     // headerTitle: {
     //     fontFamily: 'open-sans-bold'
@@ -37,19 +42,45 @@ const PostNavigator = () => {
             <PostStackNavigator.Screen 
                 name="AllPosts" 
                 component={AllPostsScreen}
-                
-            />
-            <PostStackNavigator.Screen 
-                name="EditPost" 
-                component={EditPostScreen} 
             />
             <PostStackNavigator.Screen 
                 name="SinglePost" 
                 component={SinglePostScreen} 
             />
+            <PostStackNavigator.Screen 
+                name="UserProfile"
+                component={UserProfileScreen} 
+            />
+            <PostStackNavigator.Screen
+                name="Comments"
+                component={CommentsScreen} 
+            />
+            <PostStackNavigator.Screen 
+                name="EditPost" 
+                component={EditPostScreen} 
+            />
         </PostStackNavigator.Navigator>
     );
 };
+
+
+
+const FindPeopleStackNavigator = createStackNavigator();
+
+const FindPeopleNavigator = () => {
+    return(
+        <PostStackNavigator.Navigator
+            screenOptions={defaultNavOptions}
+        >
+            <PostStackNavigator.Screen 
+                name="Find" 
+                component={FindPeopleScreen} 
+            />
+        </PostStackNavigator.Navigator>
+    );
+};
+
+
 
 
 const UserStackNavigator = createStackNavigator();
@@ -59,11 +90,33 @@ const UserNavigator = () => {
         <UserStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
-            <UserStackNavigator.Screen 
-                name="UserProfile"
-                component={UserProfileScreen}
+            <UserStackNavigator.Screen
+                name="Profile"
+                component={ProfileScreen}
             />
         </UserStackNavigator.Navigator>
+    );
+};
+
+
+const AuthStackNavigator = createStackNavigator();
+
+export const AuthNavigator = () => {
+    return(
+        <AuthStackNavigator.Navigator
+            screenOptions={defaultNavOptions}
+        >
+            <AuthStackNavigator.Screen 
+                name="Auth"
+                component={AuthScreen}
+                options={authScreenOptions}
+            />
+            <AuthStackNavigator.Screen 
+                name="ForgotPassword"
+                component={ForgotPasswordScreen}
+                options={forgotPasswordScreenOptions}
+            />
+        </AuthStackNavigator.Navigator>
     );
 };
 
@@ -98,7 +151,7 @@ export const BottomNavigator = () => {
             />
             <BottomTabNavigator.Screen 
                 name="FindPeople"
-                component={AuthNavigator}
+                component={FindPeopleNavigator}
                 options={{
                     tabBarLabel: 'Find People',
                     tabBarIcon: (props) => (
@@ -127,7 +180,7 @@ export const BottomNavigator = () => {
             />
 
             <BottomTabNavigator.Screen 
-                name="Profile"
+                name="YourProfile"
                 component={UserNavigator}
                 options={{
                     tabBarLabel: 'Profile',
@@ -144,20 +197,3 @@ export const BottomNavigator = () => {
         </BottomTabNavigator.Navigator>
     );
 };
-
-
-
-const AuthStackNavigator = createStackNavigator();
-
-const AuthNavigator = () => {
-    return(
-        <AuthStackNavigator.Navigator
-            screenOptions={defaultNavOptions}
-        >
-            <AuthStackNavigator.Screen 
-                name="Auth"
-                component={AuthScreen}
-            />
-        </AuthStackNavigator.Navigator>
-    );
-}

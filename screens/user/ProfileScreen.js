@@ -11,9 +11,10 @@ const ProfileScreen = (props) => {
 
     return(
         <View style={styles.screen} > 
-            <Button onPress={() => {
-                dispatch(authActions.logout())
-            }} >LOGOUT</Button>
+            <Button 
+                onPress={() => {dispatch(authActions.logout()) }} 
+                title="Logout"
+            />
             <Text>ProfileScreen</Text>
         </View>
     );

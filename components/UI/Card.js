@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import { timeDifference } from '../../helpers/timeDifference';
 
 import ENV from '../../env';
 
+let x = 0;
 
 const Card = (props) => {
     const { post } = props;
@@ -17,7 +18,7 @@ const Card = (props) => {
     const [showFullBody, setShowFullBody] = useState(false);
 
     const onImageErrorHandler = () => {
-        setImageUri('https://thumbs.dreamstime.com/b/default-avatar-profile-vector-user-profile-default-avatar-profile-vector-user-profile-profile-179376714.jpg')
+        setImageUri(ENV.defaultImageUri)
     }
 
     return (
@@ -49,7 +50,7 @@ const Card = (props) => {
                     onLoad={() => setIsImageLoading(false)}
                 />
                 { isImageLoading && (
-                    <ActivityIndicator size='large' />
+                    <ActivityIndicator style={{ position: 'absolute', top: '40%', left: '40%' }} size='large' />
                 )}
                 <View style={styles.cardHeader}>
                     <View>
@@ -173,6 +174,7 @@ const styles = StyleSheet.create({
         flex: 1,
         height: 275,
         width: null,
+        backgroundColor: '#c2c2c2'
     },
     /******** card components **************/
     title: {

@@ -109,7 +109,7 @@ export const AuthNavigator = () => {
             <AuthStackNavigator.Screen 
                 name="Auth"
                 component={AuthScreen}
-                options={authScreenOptions}
+                options={{ headerShown: false }}
             />
             <AuthStackNavigator.Screen 
                 name="ForgotPassword"

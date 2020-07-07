@@ -205,7 +205,6 @@ const AuthScreen = (props) => {
 export const screenOptions = (navData) => {
     return{
         headerTitle: 'Auth',
-        
     }
 }
 

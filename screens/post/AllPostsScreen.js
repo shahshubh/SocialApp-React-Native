@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, useRef} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -13,6 +13,8 @@ const AllPostsScreen = (props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState();
+
+    const refPosts = useRef(null);
 
     const posts = useSelector(state => state.posts.allPosts);
     const userId = useSelector(state => state.auth.user._id);
@@ -39,10 +41,23 @@ const AllPostsScreen = (props) => {
     //         unsubscribe();
     //     };
     // }, [loadPosts])
+    // useEffect(() => {
+    //     const unsubscribe = props.navigation.addListener('focus', e => {
+    //         console.log("TAB PRESSED");
+    //         if(refPosts.current){
+    //             refPosts.current.scrollToIndex({ animated: true, index: 0 });
+    //         }
+    //     });
+
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, [])
 
     useEffect(() => {
         setIsLoading(true);
-        loadPosts().then(() => {
+        loadPosts()
+        .then(() => {
             setIsLoading(false);
         });
     }, [dispatch, loadPosts])
@@ -77,7 +92,8 @@ const AllPostsScreen = (props) => {
 
     return (
         <View style={styles.screen} >
-            <FlatList 
+            <FlatList
+                ref={refPosts}
                 style={styles.list}
                 onRefresh={loadPosts}
                 refreshing={isRefreshing}

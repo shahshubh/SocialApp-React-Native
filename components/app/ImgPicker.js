@@ -1,12 +1,31 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { View, Text, StyleSheet, Button, Image, Alert } from 'react-native';
 import Colors from '../../constants/Colors';
+import { useNavigation } from '@react-navigation/native';
+
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ImgPicker = props => {
+    
+    const [pickedImage, setPickedImage] = useState(props.editImage);
+    const navigation = useNavigation();
+
+    
+
+    useEffect(() => {
+        const unsubscribe = navigation.addListener('focus', e => {
+            if(!props.editImage){
+                setPickedImage()
+            }
+        });
+
+        return () => {
+            unsubscribe();
+        };
+    }, [])
 
 
     const verifyPermissions = async () => {
@@ -35,7 +54,7 @@ const ImgPicker = props => {
                 quality: 0.6,
             });
             if(!image.cancelled){
-                props.setPickedImage(image);
+                setPickedImage(image);
                 let res = image.uri.split('.');
                 let imageExtenstion = res[res.length - 1];
                 let imageType = `${image.type}/${imageExtenstion}`;
@@ -49,12 +68,12 @@ const ImgPicker = props => {
     return(
         <View style={styles.imagePicker} >
             <View style={styles.imagePreview} >
-                { !props.pickedImage ? (
-                    <Text>No Image Picked</Text>
+                { !pickedImage ? (
+                    <Text style={{ fontSize: 18 }} >No Image Picked</Text>
                 ) : (
                     <Image
                         style={styles.image}
-                        source={{ uri: props.pickedImage.uri }}
+                        source={{ uri: props.previousUpdate ? `${pickedImage.uri}?${new Date().getMinutes()}` : `${pickedImage.uri}` }}
                     />
                 ) }
             </View>
@@ -84,7 +103,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderColor: Colors.brightBlue,
-        borderWidth: 1
+        borderWidth: 1,
+        backgroundColor: '#c2c2c2'
     },
     image: {
         width: '100%',

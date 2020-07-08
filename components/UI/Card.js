@@ -1,25 +1,46 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform, Alert } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { timeDifference } from '../../helpers/timeDifference';
 
+import Colors from '../../constants/Colors';
 import ENV from '../../env';
+import { useDispatch } from 'react-redux';
+import * as postActions from '../../store/actions/posts';
 
 const Card = React.memo(function CardComponent(props){
     const { post, userId } = props;
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    // const liked = post.likes.indexOf(userId) !== -1;
 
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${post.postedBy._id}`)
     const [showFullBody, setShowFullBody] = useState(false);
-    
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
     }
 
-    const liked = post.likes.indexOf(userId) !== -1;
+    const deleteHandler = (id) => {
+        Alert.alert(
+            'Are you sure?', 
+            'Do you really want to delete this post?',
+            [
+                {text: 'No', style: 'default'},
+                {
+                    text: 'Yes', 
+                    style: 'destructive', 
+                    onPress: () => {
+                        dispatch(postActions.deletePost(id))
+                    }
+                }
+            ]
+        )
+    };
+
 
     return (
         <View style={styles.screen} >
@@ -44,11 +65,20 @@ const Card = React.memo(function CardComponent(props){
                         </View>
                     </View>
                 </View>
-                <Image 
-                    style={styles.cardImage} 
-                    source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}` }}
-                    onLoad={() => setIsImageLoading(false)}
-                />
+                { post.updated ? (
+                    <Image 
+                        style={styles.cardImage}
+                        source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date()}` }}
+                        onLoad={() => setIsImageLoading(false)}
+                    />
+                ) : (
+                    <Image 
+                        style={styles.cardImage}
+                        source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}` }}
+                        onLoad={() => setIsImageLoading(false)}
+                    />
+                ) }
+                
                 { isImageLoading && (
                     <ActivityIndicator style={{ position: 'absolute', top: '40%', left: '40%' }} size='large' />
                 )}
@@ -89,7 +119,7 @@ const Card = React.memo(function CardComponent(props){
                                     name="md-thumbs-up"
                                     size={20}
                                     style={{ marginRight: 5 }}
-                                    color={liked ? 'blue' : "black"}
+                                    // color={liked ? 'blue' : "black"}
                                 />
                                 <Text style={styles.socialBarLabel}> {post.likes.length} </Text>
                             </TouchableOpacity>
@@ -108,34 +138,53 @@ const Card = React.memo(function CardComponent(props){
                             </TouchableOpacity>
                         </View>
                         
-                        { post.postedBy._id === userId && (
-                            <View style={styles.socialBarSection}>
-                                <TouchableOpacity style={styles.socialBarButton}>
-                                    <MaterialCommunityIcons 
-                                        name="delete"
-                                        size={20}
-                                        style={{ marginRight: 5 }}
-                                    />
-                                    <Text style={styles.socialBarLabel}>Delete</Text>
-                                </TouchableOpacity>
-                            </View>
-                        ) }
-
+                        
                     </View>
                 </View>
-                    <TouchableOpacity 
-                        onPress={() => navigation.navigate('Comments', { comments: post.comments })}
-                    >
-                        { post.comments.length > 0 ? (
-                            <Text style={{ paddingHorizontal: 16, paddingBottom: 15, paddingTop: 5 }} >View all {post.comments.length} comments </Text>
-                        ) : (
-                            <Text style={{ paddingHorizontal: 16, paddingBottom: 15, paddingTop: 5 }} >Comment here </Text>
-                        ) }
-                    </TouchableOpacity>
+                <TouchableOpacity 
+                    onPress={() => navigation.navigate('Comments', { comments: post.comments })}
+                >
+                    { post.comments.length > 0 ? (
+                        <Text style={{ paddingHorizontal: 16, paddingBottom: 15, paddingTop: 5 }} >View all {post.comments.length} comments </Text>
+                    ) : (
+                        <Text style={{ paddingHorizontal: 16, paddingBottom: 15, paddingTop: 5 }} >Comment here </Text>
+                    ) }
+                </TouchableOpacity>
+                { post.postedBy._id === userId && (
+                    <View style={styles.postActions} >
+                        <View style={styles.socialBarSection}>
+                            <TouchableOpacity 
+                                style={styles.socialBarButton}
+                                onPress={deleteHandler.bind(this, post._id)}
+                            >
+                                <MaterialCommunityIcons 
+                                    name="delete"
+                                    size={20}
+                                    style={{ marginRight: 5 }}
+                                    color="red"
+                                />
+                                <Text style={styles.socialBarLabel}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={styles.socialBarSection}>
+                            <TouchableOpacity 
+                                style={styles.socialBarButton}
+                                onPress={() => navigation.navigate('EditPost', { postId: post._id })}
+                            >
+                                <MaterialCommunityIcons 
+                                    name="square-edit-outline"
+                                    size={20}
+                                    style={{ marginRight: 5 }}
+                                    color={Colors.lightAccent}
+                                />
+                                <Text style={styles.socialBarLabel}>Edit</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                )}
 
-
+                
             </View>
-
         </View>
     );
 });
@@ -240,6 +289,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    postActions: {
+        borderTopColor: '#c2c2c2',
+        borderTopWidth: 1,
+        flexDirection: 'row',
+        padding: 15,
     }
 })
 

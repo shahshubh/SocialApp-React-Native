@@ -7,8 +7,8 @@ import ImgPicker from '../../components/app/ImgPicker';
 import Colors from '../../constants/Colors';
 
 const AddPostScreen = (props) => {
-    const [pickedImage, setPickedImage] = useState();
 
+    const [clearPickedImage, setClearPickedImage ] = useState(false);
     const [title, setTitle] = useState('');
     const [body, setBody] = useState('');
     const [base64Data, setBase64Data] = useState('');
@@ -21,7 +21,7 @@ const AddPostScreen = (props) => {
 
 
     const clearForm = () => {
-        setPickedImage(null);
+        setClearPickedImage(true);
         setTitle('');
         setBody('');
         setBase64Data('');
@@ -47,7 +47,7 @@ const AddPostScreen = (props) => {
             setError('Please enter a body');
             return false;
         }
-        if(!pickedImage || base64Data.length === 0 ){
+        if(base64Data.length === 0 ){
             setError('Please select an image to post.');
             return false;
         }
@@ -89,8 +89,13 @@ const AddPostScreen = (props) => {
                         </View>
                     )}
 
-                    <ImgPicker onImageTaken={imagePickedHandler} setPickedImage={setPickedImage} pickedImage={pickedImage} />
-
+                    <ImgPicker 
+                        onImageTaken={imagePickedHandler}
+                        clearPickedImage={clearPickedImage}
+                    />
+                    <View style={styles.labelContainer} >
+                        <Text style={styles.labelText} >Title</Text>
+                    </View>
                     <View style={styles.inputContainer}>
                         <TextInput style={styles.inputs}
                             placeholder="Title"
@@ -99,7 +104,9 @@ const AddPostScreen = (props) => {
                             onChangeText={(text) => setTitle(text) }
                         />
                     </View>
-
+                    <View style={styles.labelContainer} >
+                        <Text style={styles.labelText} >Body</Text>
+                    </View>
                     <View style={styles.inputContainer}>
                         <TextInput style={styles.inputs}
                             placeholder="Body"
@@ -166,6 +173,16 @@ const styles = StyleSheet.create({
         height: 30,
         // marginLeft: 15,
         justifyContent: 'center'
+    },
+    labelContainer: {
+        alignSelf: 'flex-start',
+        marginLeft: 16
+    },
+    labelText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        padding: 5,
+        color: Colors.accent
     },
     inputContainer: {
         // borderBottomColor: '#F5FCFF',

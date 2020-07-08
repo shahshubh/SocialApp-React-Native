@@ -1,8 +1,9 @@
-import { SET_POSTS } from "../actions/posts";
+import { SET_POSTS, CREATE_POST } from "../actions/posts";
 
 const initialState = {
     allPosts: [],
-    userPosts: []
+    userPosts: [],
+    currPost: {}
 };
 
 export default (state=initialState, action) => {
@@ -11,6 +12,11 @@ export default (state=initialState, action) => {
             return {
                 ...state,
                 allPosts: action.posts
+            }
+        case CREATE_POST:
+            return{
+                ...state,
+                allPosts: [action.postData, ...state.allPosts]
             }
         default:
             return state;

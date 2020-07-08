@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { timeDifference } from '../../helpers/timeDifference';
 
 import ENV from '../../env';
 
-let x = 0;
-
-const Card = (props) => {
-    const { post } = props;
+const Card = React.memo(function CardComponent(props){
+    const { post, userId } = props;
     const navigation = useNavigation();
 
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${post.postedBy._id}`)
     const [showFullBody, setShowFullBody] = useState(false);
-
+    
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
     }
+
+    const liked = post.likes.indexOf(userId) !== -1;
 
     return (
         <View style={styles.screen} >
@@ -72,10 +72,12 @@ const Card = (props) => {
                                         </Text>
                                     </Text>
                                 ) }
+
                             </View>
                         ) : (
                             <Text style={styles.description}> {post.body} </Text>
                         ) }
+                        
                     </View>
                 </View>
 
@@ -87,12 +89,16 @@ const Card = (props) => {
                                     name="md-thumbs-up"
                                     size={20}
                                     style={{ marginRight: 5 }}
+                                    color={liked ? 'blue' : "black"}
                                 />
                                 <Text style={styles.socialBarLabel}> {post.likes.length} </Text>
                             </TouchableOpacity>
                         </View>
                         <View style={styles.socialBarSection}>
-                            <TouchableOpacity style={styles.socialBarButton}>
+                            <TouchableOpacity 
+                                style={styles.socialBarButton}
+                                onPress={() => navigation.navigate('Comments', { comments: post.comments })}
+                            >
                                 <Ionicons 
                                     name="md-chatboxes"
                                     size={20}
@@ -101,6 +107,20 @@ const Card = (props) => {
                                 <Text style={styles.socialBarLabel}> {post.comments.length} </Text>
                             </TouchableOpacity>
                         </View>
+                        
+                        { post.postedBy._id === userId && (
+                            <View style={styles.socialBarSection}>
+                                <TouchableOpacity style={styles.socialBarButton}>
+                                    <MaterialCommunityIcons 
+                                        name="delete"
+                                        size={20}
+                                        style={{ marginRight: 5 }}
+                                    />
+                                    <Text style={styles.socialBarLabel}>Delete</Text>
+                                </TouchableOpacity>
+                            </View>
+                        ) }
+
                     </View>
                 </View>
                     <TouchableOpacity 
@@ -118,7 +138,7 @@ const Card = (props) => {
 
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     screen: {

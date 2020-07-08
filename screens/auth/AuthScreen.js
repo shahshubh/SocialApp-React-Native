@@ -281,10 +281,10 @@ const styles = StyleSheet.create({
     },
 
     inputContainer: {
-        borderBottomColor: '#F5FCFF',
+        // borderBottomColor: '#F5FCFF',
         backgroundColor: '#FFFFFF',
         borderRadius: 30,
-        borderBottomWidth: 1,
+        // borderBottomWidth: 1,
         width: 300,
         height: 45,
         marginBottom: 20,

@@ -10,6 +10,7 @@ import AllPostsScreen from '../screens/post/AllPostsScreen';
 import EditPostScreen from '../screens/post/EditPostScreen';
 import SinglePostScreen from '../screens/post/SinglePostScreen';
 import CommentsScreen from '../screens/post/CommentsScreen';
+import AddPostScreen from '../screens/post/AddPostScreen';
 import ProfileScreen from '../screens/user/ProfileScreen';
 import UserProfileScreen from '../screens/user/UserProfileScreen';
 import FindPeopleScreen from '../screens/user/FindPeopleScreen';
@@ -80,6 +81,21 @@ const FindPeopleNavigator = () => {
     );
 };
 
+
+const CreatePostStackNavigator = createStackNavigator();
+
+const CreatePostNavigator = () => {
+    return(
+        <CreatePostStackNavigator.Navigator
+            screenOptions={defaultNavOptions}
+        >
+            <CreatePostStackNavigator.Screen
+                name="CreatePost"
+                component={AddPostScreen}
+            />
+        </CreatePostStackNavigator.Navigator>
+    );
+};
 
 
 
@@ -166,7 +182,7 @@ export const BottomNavigator = () => {
 
             <BottomTabNavigator.Screen 
                 name="AddPost"
-                component={PostNavigator}
+                component={CreatePostNavigator}
                 options={{
                     tabBarLabel: 'Add Post',
                     tabBarIcon: (props) => (

@@ -15,6 +15,7 @@ const AllPostsScreen = (props) => {
     const [error, setError] = useState();
 
     const posts = useSelector(state => state.posts.allPosts);
+    const userId = useSelector(state => state.auth.user._id);
     const dispatch = useDispatch();
 
 
@@ -89,7 +90,7 @@ const AllPostsScreen = (props) => {
                 }}
                 renderItem={(post) => {
                     return (
-                        <Card post={post.item} />
+                        <Card post={post.item} userId={userId} />
                     )
                 }} 
             />

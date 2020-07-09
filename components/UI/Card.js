@@ -20,6 +20,7 @@ const Card = React.memo(function CardComponent(props){
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${post.postedBy._id}`)
     const [showFullBody, setShowFullBody] = useState(false);
+    const [isLiked, setIsLiked] = useState(post.likes.indexOf(userId) !== -1);
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
     }
@@ -41,6 +42,11 @@ const Card = React.memo(function CardComponent(props){
         )
     };
 
+
+    const toggleLike = async () => {
+        props.toggleLikeHandler(post._id, isLiked);
+        setIsLiked(prevState => !prevState);
+    }
 
     return (
         <View style={styles.screen} >
@@ -65,23 +71,25 @@ const Card = React.memo(function CardComponent(props){
                         </View>
                     </View>
                 </View>
-                { post.updated ? (
+                <View style={styles.cardImageContainer} >
                     <Image 
                         style={styles.cardImage}
-                        source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date()}` }}
+                        source={ 
+                            post.updated ? (
+                                { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date().getMinutes()}` }
+                            ) : (
+                                { uri: `${ENV.apiUrl}/post/photo/${post._id}` }
+                            )
+                        }
                         onLoad={() => setIsImageLoading(false)}
                     />
-                ) : (
-                    <Image 
-                        style={styles.cardImage}
-                        source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}` }}
-                        onLoad={() => setIsImageLoading(false)}
+                    <ActivityIndicator 
+                        style={{ position: 'absolute', left: 0, right: 0, top: 0, bottom: 0 }} 
+                        animating={isImageLoading} 
+                        size='large' 
+                        color={Colors.brightBlue} 
                     />
-                ) }
-                
-                { isImageLoading && (
-                    <ActivityIndicator style={{ position: 'absolute', top: '40%', left: '40%' }} size='large' />
-                )}
+                </View>
                 <View style={styles.cardHeader}>
                     <View>
                         <Text style={styles.title}>{post.title}</Text>
@@ -114,12 +122,15 @@ const Card = React.memo(function CardComponent(props){
                 <View style={styles.cardFooter}>
                     <View style={styles.socialBarContainer}>
                         <View style={styles.socialBarSection}>
-                            <TouchableOpacity style={styles.socialBarButton}>
+                            <TouchableOpacity 
+                                style={styles.socialBarButton}
+                                onPress={toggleLike}
+                            >
                                 <Ionicons 
                                     name="md-thumbs-up"
                                     size={20}
                                     style={{ marginRight: 5 }}
-                                    // color={liked ? 'blue' : "black"}
+                                    color={isLiked ? 'blue' : "black"}
                                 />
                                 <Text style={styles.socialBarLabel}> {post.likes.length} </Text>
                             </TouchableOpacity>
@@ -127,7 +138,7 @@ const Card = React.memo(function CardComponent(props){
                         <View style={styles.socialBarSection}>
                             <TouchableOpacity 
                                 style={styles.socialBarButton}
-                                onPress={() => navigation.navigate('Comments', { comments: post.comments })}
+                                onPress={() => navigation.navigate('Comments',{ postId: post._id, userId: userId })}
                             >
                                 <Ionicons 
                                     name="md-chatboxes"
@@ -142,7 +153,7 @@ const Card = React.memo(function CardComponent(props){
                     </View>
                 </View>
                 <TouchableOpacity 
-                    onPress={() => navigation.navigate('Comments', { comments: post.comments })}
+                    onPress={() => navigation.navigate('Comments', { postId: post._id, userId: userId })}
                 >
                     { post.comments.length > 0 ? (
                         <Text style={{ paddingHorizontal: 16, paddingBottom: 15, paddingTop: 5 }} >View all {post.comments.length} comments </Text>
@@ -221,7 +232,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     cardHeader: {
-        paddingTop: 17,
+        paddingTop: 0,
         paddingHorizontal: 16,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -239,11 +250,16 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 1,
         borderBottomRightRadius: 1,
     },
+    cardImageContainer: { 
+        backgroundColor: '#c2c2c2', 
+        flex: 1, 
+        display: 'flex',
+        height: 275 
+    },
     cardImage: {
         flex: 1,
         height: 275,
-        width: null,
-        backgroundColor: '#c2c2c2'
+        width: null
     },
     /******** card components **************/
     title: {

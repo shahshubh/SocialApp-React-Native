@@ -15,12 +15,16 @@ import { timeDifference } from '../../helpers/timeDifference';
 
 const Comment = (props) => {
 
-    const { comment } = props;
+    const { comment, deleteCommentHandler, userId } = props;
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${comment.postedBy._id}`)
 
 
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
+    }
+
+    const deleteComment = () => {
+        deleteCommentHandler(comment);
     }
 
     return (
@@ -41,13 +45,18 @@ const Comment = (props) => {
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row' }} >
                     <Text rkType='primary3 mediumLine'>{comment.text}</Text>
-                    <TouchableOpacity style={{ position: 'absolute', right: 0 }}>
-                    <MaterialCommunityIcons 
-                        name="delete"
-                        size={20}
-                        color='red'
-                    />
-                    </TouchableOpacity>
+                    { comment.postedBy._id === userId && (
+                        <TouchableOpacity 
+                            style={{ position: 'absolute', right: 0 }}
+                            onPress={deleteComment}
+                        >
+                            <MaterialCommunityIcons 
+                                name="delete"
+                                size={20}
+                                color='red'
+                            />
+                        </TouchableOpacity>
+                    ) }
                 </View>
             </View>
         </View>

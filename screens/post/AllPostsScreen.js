@@ -1,6 +1,8 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
+
 
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
@@ -19,6 +21,7 @@ const AllPostsScreen = (props) => {
     const posts = useSelector(state => state.posts.allPosts);
     const userId = useSelector(state => state.auth.user._id);
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
 
     const loadPosts = useCallback(async () => {
@@ -33,6 +36,20 @@ const AllPostsScreen = (props) => {
         setIsRefreshing(false);
     }, [dispatch, setIsLoading, setError])
 
+    
+    const toggleLikeHandler = async (postId, isLiked) => {
+        try {
+            if(isLiked){
+                console.log("already Liked")
+                await dispatch(postsActions.unlikePost(postId))
+            } else {
+                console.log("Not Liked")
+                await dispatch(postsActions.likePost(postId))
+            }
+        } catch (error) {
+            console.log("ERROR ", error)
+        }
+    }
 
     // useEffect(() => {
     //     const unsubscribe = props.navigation.addListener('focus', loadPosts);
@@ -41,18 +58,18 @@ const AllPostsScreen = (props) => {
     //         unsubscribe();
     //     };
     // }, [loadPosts])
-    // useEffect(() => {
-    //     const unsubscribe = props.navigation.addListener('focus', e => {
-    //         console.log("TAB PRESSED");
-    //         if(refPosts.current){
-    //             refPosts.current.scrollToIndex({ animated: true, index: 0 });
-    //         }
-    //     });
+    useEffect(() => {
+        const unsubscribe = navigation.dangerouslyGetParent().addListener('tabPress', e => {
+            console.log("TAB PRESSED");
+            if(refPosts.current){
+                refPosts.current.scrollToIndex({ animated: true, index: 0 });
+            }
+        });
 
-    //     return () => {
-    //         unsubscribe();
-    //     };
-    // }, [])
+        return () => {
+            unsubscribe();
+        };
+    }, [])
 
     useEffect(() => {
         setIsLoading(true);
@@ -106,7 +123,7 @@ const AllPostsScreen = (props) => {
                 }}
                 renderItem={(post) => {
                     return (
-                        <Card post={post.item} userId={userId} />
+                        <Card post={post.item} userId={userId} toggleLikeHandler={toggleLikeHandler} />
                     )
                 }} 
             />

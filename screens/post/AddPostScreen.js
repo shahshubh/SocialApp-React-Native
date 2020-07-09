@@ -1,5 +1,15 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
+import { 
+    View, 
+    Text, 
+    StyleSheet, 
+    TextInput, 
+    TouchableOpacity, 
+    Image, 
+    ActivityIndicator, 
+    KeyboardAvoidingView, 
+    ScrollView 
+} from 'react-native';
 import { useDispatch } from 'react-redux';
 
 import * as postActions from '../../store/actions/posts';
@@ -78,17 +88,15 @@ const AddPostScreen = (props) => {
     }
 
     return(
-        <View style={styles.screen} > 
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" >
+        <ScrollView  >
+            <KeyboardAvoidingView style={styles.screen} behavior="padding" >
                 <View style={styles.container}>
-
                     { error !== null && (
                         <View style={styles.errorMsgContainer} >
                             <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
                             <Text style={styles.msgText}> {error} </Text>
                         </View>
                     )}
-
                     <ImgPicker 
                         onImageTaken={imagePickedHandler}
                         clearPickedImage={clearPickedImage}
@@ -115,12 +123,10 @@ const AddPostScreen = (props) => {
                             onChangeText={(text) => setBody(text) }
                         />
                     </View>
-
                     <TouchableOpacity 
                         style={[styles.buttonContainer, styles.loginButton]}
                         onPress={createPost}
                     >
-
                         { isLoading ? (
                             <ActivityIndicator size="small" color="#fff" />
                         )  :(
@@ -130,12 +136,9 @@ const AddPostScreen = (props) => {
                         ) }
                         
                     </TouchableOpacity>
-
-                    </View>   
-                
+                </View>
             </KeyboardAvoidingView>
-
-        </View>
+        </ScrollView>
     );
 };
 
@@ -143,7 +146,8 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 40
     },
     container: {
         flex: 1,

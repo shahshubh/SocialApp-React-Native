@@ -4,6 +4,10 @@ export const DELETE_POST = "DELETE_PRODUCT";
 export const CREATE_POST = "CREATE_PRODUCT";
 export const UPDATE_POST = "UPDATE_PRODUCT";
 export const SET_POSTS = 'SET_POSTS';
+export const LIKE_POST = 'LIKE_POST';
+export const UNLIKE_POST = 'UNLIKE_POST';
+export const COMMENT_POST = 'COMMENT_POST';
+export const UNCOMMENT_POST = 'UNCOMMENT_POST';
 
 export const fetchPosts = () => {
     return async (dispatch, getState) => {
@@ -89,9 +93,9 @@ export const deletePost = (postId) => {
 
 
 export const updatePost = (postId,title, body, base64Data, imageType) => {
-
     return async (dispatch, getState) => {
         const token = getState().auth.token;
+        console.log("UPDATE")
         let postData;
         // const userId = getState().auth.user._id;
         if( !base64Data || !imageType || (base64Data === '' && imageType === '')){
@@ -99,7 +103,6 @@ export const updatePost = (postId,title, body, base64Data, imageType) => {
         } else {
             postData = {title, body, base64Data, imageType}
         }
-
         const response = await fetch(`${ENV.apiUrl}/rn/post/${postId}`, {
             method: "PUT",
             headers: {
@@ -108,12 +111,10 @@ export const updatePost = (postId,title, body, base64Data, imageType) => {
             },
             body: JSON.stringify(postData)
         });
-
         const resData = await response.json();
         if(resData.error){
             throw new Error(resData.error);
         }
-
         dispatch({
             type: UPDATE_POST,
             updatedPostData: {
@@ -130,5 +131,117 @@ export const updatePost = (postId,title, body, base64Data, imageType) => {
                 updated: new Date(resData.updated)
             }
         });
+    }
+};
+
+
+export const likePost = (postId) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
+        const userId = getState().auth.user._id;
+        
+        dispatch({
+            type: LIKE_POST,
+            userId: userId,
+            postId: postId
+        });
+        
+        const response = await fetch(`${ENV.apiUrl}/post/like`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, postId })
+        });
+
+        const resData = await response.json();
+        if(resData.error){
+            throw new Error(resData.error);
+        }
+
+    }
+};
+
+
+export const unlikePost = (postId) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
+        const userId = getState().auth.user._id;
+        
+        dispatch({
+            type: UNLIKE_POST,
+            userId: userId,
+            postId: postId
+        });
+        const response = await fetch(`${ENV.apiUrl}/post/unlike`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, postId })
+        });
+        const resData = await response.json();
+        if(resData.error){
+            throw new Error(resData.error);
+        }
+    }
+};
+
+
+
+export const commentPost = (postId, text) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
+        const userId = getState().auth.user._id;
+        
+        const comment = {text};
+
+        const response = await fetch(`${ENV.apiUrl}/post/comment`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, postId, comment })
+        });
+        const resData = await response.json();
+        if(resData.error){
+            throw new Error(resData.error);
+        }
+
+        dispatch({
+            type: COMMENT_POST,
+            postId: postId,
+            comments: resData.comments
+        });
+    }
+};
+
+
+export const uncommentPost = (postId, comment) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
+        const userId = getState().auth.user._id;
+        
+        dispatch({
+            type: UNCOMMENT_POST,
+            postId: postId,
+            commentId: comment._id
+        });
+
+        const response = await fetch(`${ENV.apiUrl}/post/uncomment`, {
+            method: "PUT",
+            headers: {
+                'Content-Type': "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, postId, comment })
+        });
+        const resData = await response.json();
+        if(resData.error){
+            throw new Error(resData.error);
+        }
     }
 };

@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
+import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as postActions from '../../store/actions/posts';
@@ -77,10 +77,9 @@ const EditPostScreen = (props) => {
     }
 
     return(
-        <View style={styles.screen} > 
-            <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding" >
+        <ScrollView>
+            <KeyboardAvoidingView style={styles.screen} behavior="padding" >
                 <View style={styles.container}>
-
                     { error !== null && (
                         <View style={styles.errorMsgContainer} >
                             <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
@@ -137,7 +136,7 @@ const EditPostScreen = (props) => {
                 
             </KeyboardAvoidingView>
 
-        </View>
+        </ScrollView>
     );
 };
 
@@ -145,7 +144,8 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 40
     },
     container: {
         flex: 1,

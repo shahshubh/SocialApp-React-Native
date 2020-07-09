@@ -1,11 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Button } from 'react-native';
 
-
-const SinglePostScreen = (props) => {
+const UserStatsScreen = (props) => {
     return(
         <View style={styles.screen} > 
-            <Text>SinglePostScreen</Text>
+            <Text>UserStatsScreen</Text>
         </View>
     );
 };
@@ -18,4 +17,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default SinglePostScreen;
+export default UserStatsScreen;

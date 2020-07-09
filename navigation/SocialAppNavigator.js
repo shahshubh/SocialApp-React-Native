@@ -1,6 +1,6 @@
 import React from 'react';
 import Colors from '../constants/Colors';
-import { Platform, SafeAreaView, Button, View } from 'react-native';
+import { Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 import { createStackNavigator } from '@react-navigation/stack';
@@ -8,14 +8,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import AllPostsScreen from '../screens/post/AllPostsScreen';
 import EditPostScreen from '../screens/post/EditPostScreen';
-import SinglePostScreen from '../screens/post/SinglePostScreen';
 import CommentsScreen from '../screens/post/CommentsScreen';
 import AddPostScreen from '../screens/post/AddPostScreen';
 import ProfileScreen from '../screens/user/ProfileScreen';
 import UserProfileScreen from '../screens/user/UserProfileScreen';
 import FindPeopleScreen from '../screens/user/FindPeopleScreen';
+import UserStatsScreen from '../screens/user/UserStatsScreen';
+import UserPostsScreen from '../screens/user/UserPostsScreen';
 
-import AuthScreen, {screenOptions as authScreenOptions} from '../screens/auth/AuthScreen';
+import AuthScreen from '../screens/auth/AuthScreen';
 import ForgotPasswordScreen, {screenOptions as forgotPasswordScreenOptions} from '../screens/auth/ForgotPasswordScreen';
 
 
@@ -45,12 +46,16 @@ const PostNavigator = () => {
                 component={AllPostsScreen}
             />
             <PostStackNavigator.Screen 
-                name="SinglePost" 
-                component={SinglePostScreen} 
+                name="HomeUserProfile"
+                component={UserProfileScreen} 
             />
             <PostStackNavigator.Screen 
-                name="UserProfile"
-                component={UserProfileScreen} 
+                name="HomeUserStats"
+                component={UserStatsScreen} 
+            />
+            <UserStackNavigator.Screen
+                name="HomeUserPosts"
+                component={UserPostsScreen}
             />
             <PostStackNavigator.Screen
                 name="Comments"
@@ -110,36 +115,21 @@ const UserNavigator = () => {
                 name="Profile"
                 component={ProfileScreen}
             />
+            <PostStackNavigator.Screen 
+                name="UserProfile"
+                component={UserProfileScreen} 
+            />
+            <PostStackNavigator.Screen 
+                name="UserStats"
+                component={UserStatsScreen} 
+            />
+            <UserStackNavigator.Screen
+                name="UserPosts"
+                component={UserPostsScreen}
+            />
         </UserStackNavigator.Navigator>
     );
 };
-
-
-const AuthStackNavigator = createStackNavigator();
-
-export const AuthNavigator = () => {
-    return(
-        <AuthStackNavigator.Navigator
-            screenOptions={defaultNavOptions}
-        >
-            <AuthStackNavigator.Screen 
-                name="Auth"
-                component={AuthScreen}
-                options={{ headerShown: false }}
-            />
-            <AuthStackNavigator.Screen 
-                name="ForgotPassword"
-                component={ForgotPasswordScreen}
-                options={forgotPasswordScreenOptions}
-            />
-        </AuthStackNavigator.Navigator>
-    );
-};
-
-
-
-
-
 
 
 const BottomTabNavigator = createBottomTabNavigator();
@@ -211,5 +201,29 @@ export const BottomNavigator = () => {
             />
             
         </BottomTabNavigator.Navigator>
+    );
+};
+
+
+
+
+const AuthStackNavigator = createStackNavigator();
+
+export const AuthNavigator = () => {
+    return(
+        <AuthStackNavigator.Navigator
+            screenOptions={defaultNavOptions}
+        >
+            <AuthStackNavigator.Screen 
+                name="Auth"
+                component={AuthScreen}
+                options={{ headerShown: false }}
+            />
+            <AuthStackNavigator.Screen 
+                name="ForgotPassword"
+                component={ForgotPasswordScreen}
+                options={forgotPasswordScreenOptions}
+            />
+        </AuthStackNavigator.Navigator>
     );
 };

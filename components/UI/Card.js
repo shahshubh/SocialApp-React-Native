@@ -59,7 +59,7 @@ const Card = React.memo(function CardComponent(props){
                                 source={{ uri: imageUri }}
                                 onError={onImageErrorHandler}
                             />
-                            <Text style={{ marginLeft: 5, marginTop: 3 }} > {post.postedBy.name} </Text>
+                            <Text style={{ marginLeft: 5, marginTop: 3 }} onPress={() => navigation.navigate('UserProfile')} > {post.postedBy.name} </Text>
                         </View>
                         <View style={{ position: 'absolute', right: 0, display: 'flex', flexDirection: 'row'}}>
                             <Ionicons 
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
     cardHeader: {
-        paddingTop: 0,
+        paddingTop: 16,
         paddingHorizontal: 16,
         flexDirection: 'row',
         justifyContent: 'space-between',

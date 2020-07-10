@@ -11,10 +11,10 @@ import EditPostScreen from '../screens/post/EditPostScreen';
 import CommentsScreen from '../screens/post/CommentsScreen';
 import AddPostScreen from '../screens/post/AddPostScreen';
 import ProfileScreen from '../screens/user/ProfileScreen';
-import UserProfileScreen from '../screens/user/UserProfileScreen';
+import UserProfileScreen, { screenOptions as userProfileScreenOptions } from '../screens/user/UserProfileScreen';
 import FindPeopleScreen from '../screens/user/FindPeopleScreen';
 import UserStatsScreen from '../screens/user/UserStatsScreen';
-import UserPostsScreen from '../screens/user/UserPostsScreen';
+import UserPostsScreen, {screenOptions as userPostsScreenOptions} from '../screens/user/UserPostsScreen';
 
 import AuthScreen from '../screens/auth/AuthScreen';
 import ForgotPasswordScreen, {screenOptions as forgotPasswordScreenOptions} from '../screens/auth/ForgotPasswordScreen';
@@ -46,16 +46,18 @@ const PostNavigator = () => {
                 component={AllPostsScreen}
             />
             <PostStackNavigator.Screen 
-                name="HomeUserProfile"
-                component={UserProfileScreen} 
+                name="UserProfile"
+                component={UserProfileScreen}
+                options={userProfileScreenOptions}
             />
             <PostStackNavigator.Screen 
-                name="HomeUserStats"
+                name="UserStats"
                 component={UserStatsScreen} 
             />
-            <UserStackNavigator.Screen
-                name="HomeUserPosts"
+            <PostStackNavigator.Screen
+                name="UserPosts"
                 component={UserPostsScreen}
+                options={userPostsScreenOptions}
             />
             <PostStackNavigator.Screen
                 name="Comments"
@@ -112,20 +114,18 @@ const UserNavigator = () => {
             screenOptions={defaultNavOptions}
         >
             <UserStackNavigator.Screen
-                name="Profile"
-                component={ProfileScreen}
-            />
-            <PostStackNavigator.Screen 
                 name="UserProfile"
-                component={UserProfileScreen} 
+                component={UserProfileScreen}
+                options={userProfileScreenOptions}
             />
-            <PostStackNavigator.Screen 
+            <UserStackNavigator.Screen 
                 name="UserStats"
                 component={UserStatsScreen} 
             />
             <UserStackNavigator.Screen
                 name="UserPosts"
                 component={UserPostsScreen}
+                options={userPostsScreenOptions}
             />
         </UserStackNavigator.Navigator>
     );

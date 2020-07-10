@@ -1,4 +1,4 @@
-import { SET_POSTS, CREATE_POST, DELETE_POST, UPDATE_POST, LIKE_POST, UNLIKE_POST, COMMENT_POST, UNCOMMENT_POST } from "../actions/posts";
+import { SET_POSTS, CREATE_POST, DELETE_POST, UPDATE_POST, LIKE_POST, UNLIKE_POST, COMMENT_POST, UNCOMMENT_POST, ADD_COMMENT_TEMP } from "../actions/posts";
 
 const initialState = {
     allPosts: [],
@@ -71,6 +71,15 @@ export default (state=initialState, action) => {
             return{
                 ...state,
                 allPosts: updatedUncommentPosts
+            }
+
+        case ADD_COMMENT_TEMP:
+            const i = state.allPosts.findIndex(post => post._id === action.postId);
+            const updatedAddComment = [...state.allPosts];
+            updatedAddComment[i].comments = updatedAddComment[i].comments.concat(action.comment)
+            return{
+                ...state,
+                allPosts: updatedAddComment
             }
 
         default:

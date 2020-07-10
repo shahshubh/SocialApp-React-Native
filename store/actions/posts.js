@@ -8,6 +8,7 @@ export const LIKE_POST = 'LIKE_POST';
 export const UNLIKE_POST = 'UNLIKE_POST';
 export const COMMENT_POST = 'COMMENT_POST';
 export const UNCOMMENT_POST = 'UNCOMMENT_POST';
+export const ADD_COMMENT_TEMP = 'ADD_COMMENT_TEMP';
 
 export const fetchPosts = () => {
     return async (dispatch, getState) => {
@@ -195,8 +196,22 @@ export const commentPost = (postId, text) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token;
         const userId = getState().auth.user._id;
+        const userName = getState().auth.user.name;
         
         const comment = {text};
+
+        // dispatch({
+        //     type: ADD_COMMENT_TEMP,
+        //     postId: postId,
+        //     comment: {
+        //         text: text,
+        //         postedBy: {
+        //             _id: userId,
+        //             name: userName
+        //         },
+        //         created: new Date()
+        //     }
+        // });
 
         const response = await fetch(`${ENV.apiUrl}/post/comment`, {
             method: "PUT",
@@ -210,7 +225,7 @@ export const commentPost = (postId, text) => {
         if(resData.error){
             throw new Error(resData.error);
         }
-
+        console.log(resData.comments);
         dispatch({
             type: COMMENT_POST,
             postId: postId,

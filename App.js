@@ -6,12 +6,14 @@ import ReduxThunk from 'redux-thunk';
 
 import authReducer from './store/reducers/auth';
 import postsReducer from './store/reducers/posts';
+import usersReducer from './store/reducers/users';
 import AppNavigator from './navigation/AppNavigator';
 
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  posts: postsReducer
+  posts: postsReducer,
+  users: usersReducer
 });
 
 const store = createStore(

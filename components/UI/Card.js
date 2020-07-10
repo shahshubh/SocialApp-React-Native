@@ -59,7 +59,12 @@ const Card = React.memo(function CardComponent(props){
                                 source={{ uri: imageUri }}
                                 onError={onImageErrorHandler}
                             />
-                            <Text style={{ marginLeft: 5, marginTop: 3 }} onPress={() => navigation.navigate('UserProfile')} > {post.postedBy.name} </Text>
+                            <Text 
+                                style={{ marginLeft: 5, marginTop: 3 }} 
+                                onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })} 
+                            > 
+                                {post.postedBy.name} 
+                            </Text>
                         </View>
                         <View style={{ position: 'absolute', right: 0, display: 'flex', flexDirection: 'row'}}>
                             <Ionicons 
@@ -76,7 +81,7 @@ const Card = React.memo(function CardComponent(props){
                         style={styles.cardImage}
                         source={ 
                             post.updated ? (
-                                { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date().getMinutes()}` }
+                                { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date()}` }
                             ) : (
                                 { uri: `${ENV.apiUrl}/post/photo/${post._id}` }
                             )
@@ -128,7 +133,7 @@ const Card = React.memo(function CardComponent(props){
                             >
                                 <Ionicons 
                                     name="md-thumbs-up"
-                                    size={20}
+                                    size={24}
                                     style={{ marginRight: 5 }}
                                     color={isLiked ? 'blue' : "black"}
                                 />
@@ -142,7 +147,7 @@ const Card = React.memo(function CardComponent(props){
                             >
                                 <Ionicons 
                                     name="md-chatboxes"
-                                    size={20}
+                                    size={24}
                                     style={{ marginRight: 5 }}
                                 />
                                 <Text style={styles.socialBarLabel}> {post.comments.length} </Text>

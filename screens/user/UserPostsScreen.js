@@ -9,6 +9,11 @@ const UserPostsScreen = (props) => {
     );
 };
 
+
+export const screenOptions = {
+    headerTitle: 'Posts'
+};
+
 const styles = StyleSheet.create({
     screen: {
         flex: 1,

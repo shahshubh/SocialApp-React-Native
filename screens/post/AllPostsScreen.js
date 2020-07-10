@@ -8,6 +8,7 @@ import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
 
 import * as postsActions from '../../store/actions/posts';
+import * as usersActions from '../../store/actions/users';
 
 
 const AllPostsScreen = (props) => {
@@ -29,6 +30,7 @@ const AllPostsScreen = (props) => {
         setIsRefreshing(true);
         try {
             await dispatch(postsActions.fetchPosts());
+            await dispatch(usersActions.fetchUsers());
 
         } catch (err) {
             setError(err.message);

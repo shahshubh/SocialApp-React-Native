@@ -36,8 +36,9 @@ export default (state=initialState, action) => {
         case LIKE_POST:
             const pIndex = state.allPosts.findIndex(post => post._id === action.postId);
             const updatedLikePosts = [...state.allPosts];
-            updatedLikePosts[pIndex].likes = updatedLikePosts[pIndex].likes.concat(action.userId);
-            console.log(updatedLikePosts[pIndex].likes);
+            if(updatedLikePosts[pIndex].likes.indexOf(action.userId) === -1){
+                updatedLikePosts[pIndex].likes = updatedLikePosts[pIndex].likes.concat(action.userId);
+            }
             return{
                 ...state,
                 allPosts: updatedLikePosts
@@ -47,7 +48,6 @@ export default (state=initialState, action) => {
             const pInd = state.allPosts.findIndex(post => post._id === action.postId);
             const updatedUnlikePosts = [...state.allPosts];
             updatedUnlikePosts[pInd].likes = updatedUnlikePosts[pInd].likes.filter(x => x !== action.userId);
-            console.log(updatedUnlikePosts[pInd].likes);
             return{
                 ...state,
                 allPosts: updatedUnlikePosts
@@ -57,7 +57,6 @@ export default (state=initialState, action) => {
             const index = state.allPosts.findIndex(post => post._id === action.postId);
             const updatedCommentPosts = [...state.allPosts];
             updatedCommentPosts[index].comments = action.comments;
-            console.log(updatedCommentPosts[index].comments);
             return{
                 ...state,
                 allPosts: updatedCommentPosts

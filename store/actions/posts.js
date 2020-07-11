@@ -96,7 +96,6 @@ export const deletePost = (postId) => {
 export const updatePost = (postId,title, body, base64Data, imageType) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token;
-        console.log("UPDATE")
         let postData;
         // const userId = getState().auth.user._id;
         if( !base64Data || !imageType || (base64Data === '' && imageType === '')){
@@ -140,27 +139,28 @@ export const likePost = (postId) => {
     return async (dispatch, getState) => {
         const token = getState().auth.token;
         const userId = getState().auth.user._id;
-        
-        dispatch({
-            type: LIKE_POST,
-            userId: userId,
-            postId: postId
-        });
-        
-        const response = await fetch(`${ENV.apiUrl}/post/like`, {
-            method: "PUT",
-            headers: {
-                'Content-Type': "application/json",
-                Authorization: `Bearer ${token}`
-            },
-            body: JSON.stringify({ userId, postId })
-        });
-
-        const resData = await response.json();
-        if(resData.error){
-            throw new Error(resData.error);
+        const posts = getState().posts.allPosts;
+        const index = posts.findIndex(p => p._id === postId)
+        if(posts[index].likes.indexOf(userId) === -1){
+            dispatch({
+                type: LIKE_POST,
+                userId: userId,
+                postId: postId
+            });
+            
+            const response = await fetch(`${ENV.apiUrl}/post/like`, {
+                method: "PUT",
+                headers: {
+                    'Content-Type': "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ userId, postId })
+            });
+            const resData = await response.json();
+            if(resData.error){
+                throw new Error(resData.error);
+            }
         }
-
     }
 };
 
@@ -225,7 +225,6 @@ export const commentPost = (postId, text) => {
         if(resData.error){
             throw new Error(resData.error);
         }
-        console.log(resData.comments);
         dispatch({
             type: COMMENT_POST,
             postId: postId,

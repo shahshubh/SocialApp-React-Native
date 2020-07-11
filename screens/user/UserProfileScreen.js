@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect} from "react";
+import React, {useCallback, useState, useEffect, useRef} from "react";
 import {
     View,
     Text,
@@ -18,7 +18,6 @@ import * as usersActions from '../../store/actions/users';
 import * as postsActions from '../../store/actions/posts';
 import { useDispatch, useSelector } from "react-redux";
 import ENV from '../../env';
-import { TouchableHighlight } from "react-native-gesture-handler";
 
 const UserProfileScreen = (props) => {
     const { route } = props;
@@ -45,7 +44,6 @@ const UserProfileScreen = (props) => {
 
     const loadUsers = useCallback(async () => {
         setIsRefreshing(true);
-        console.log("LOADING USERS");
         try {
             await dispatch(usersActions.fetchUsers());
             await dispatch(postsActions.fetchPosts());
@@ -54,15 +52,6 @@ const UserProfileScreen = (props) => {
         }
         setIsRefreshing(false);
     }, [dispatch, setIsLoading]);
-
-    // useEffect(() => {
-    //     console.log("USE EFFECT");
-    //     setIsLoading(true);
-    //     loadUsers()
-    //     .then(() => {
-    //         setIsLoading(false);
-    //     });
-    // }, [dispatch, loadUsers]);
 
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
@@ -73,9 +62,7 @@ const UserProfileScreen = (props) => {
             return (
                 <TouchableOpacity 
                     key={index}
-                    onPress={() => {
-                        props.navigation.navigate('UserPosts')
-                    }}
+                    onPress={() => props.navigation.navigate('UserPosts', { userId: userId, postIndex: index })}
                 >
                     <View  style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                         <Image 
@@ -88,7 +75,7 @@ const UserProfileScreen = (props) => {
                             }}
                             source={
                                 post.updated ? (
-                                    { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date()}` }
+                                    { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date(post.updated)}` }
                                 ) : (
                                     { uri: `${ENV.apiUrl}/post/photo/${post._id}` }
                                 )
@@ -146,15 +133,33 @@ const UserProfileScreen = (props) => {
                                     alignItems: 'flex-end'
                                 }}>
                                 <View style={{ alignItems: 'center' }}>
-                                    <Text> {currUserPosts.length} </Text>
+                                    <TouchableOpacity
+                                        onPress={() => props.navigation.navigate('UserPosts', { userId: userId, postIndex: 0 })}
+                                    >
+                                        <Text> {currUserPosts.length} </Text>
+                                    </TouchableOpacity>
                                     <Text style={{ fontSize: 10, color: 'grey' }}>Posts</Text>
                                 </View>
                                 <View style={{ alignItems: 'center' }}>
-                                    <Text> { currUser.followers.length } </Text>
+                                    <TouchableOpacity
+                                        onPress={() => props.navigation.navigate(
+                                            'UserStats',
+                                            { activeTab: 1, currUser: currUser }
+                                        )}
+                                    >
+                                        <Text> { currUser.followers.length } </Text>
+                                    </TouchableOpacity>
                                     <Text style={{ fontSize: 10, color: 'grey' }}>Followers</Text>
                                 </View>
                                 <View style={{ alignItems: 'center' }}>
-                                    <Text> { currUser.following.length } </Text>
+                                    <TouchableOpacity
+                                        onPress={() => props.navigation.navigate(
+                                            'UserStats',
+                                            { activeTab: 2, currUser: currUser }
+                                        )}
+                                    >
+                                        <Text> { currUser.following.length } </Text>
+                                    </TouchableOpacity>
                                     <Text style={{ fontSize: 10, color: 'grey' }}>Following</Text>
                                 </View>
                             </View>

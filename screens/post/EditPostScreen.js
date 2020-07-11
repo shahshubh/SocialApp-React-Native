@@ -60,7 +60,6 @@ const EditPostScreen = (props) => {
         if(validatePost()){
             try {
                 await dispatch(postActions.updatePost(postId, title, body, base64Data, imageType));
-                console.log(imageType);
                 clearForm();
                 props.navigation.goBack();
             } catch (error) {

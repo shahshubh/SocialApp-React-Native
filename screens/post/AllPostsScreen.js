@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, ActivityIndicator, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, Button } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
@@ -40,12 +40,11 @@ const AllPostsScreen = (props) => {
 
     
     const toggleLikeHandler = async (postId, isLiked) => {
+        
         try {
             if(isLiked){
-                console.log("already Liked")
                 await dispatch(postsActions.unlikePost(postId))
             } else {
-                console.log("Not Liked")
                 await dispatch(postsActions.likePost(postId))
             }
         } catch (error) {

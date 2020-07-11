@@ -20,7 +20,6 @@ const Card = React.memo(function CardComponent(props){
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${post.postedBy._id}`)
     const [showFullBody, setShowFullBody] = useState(false);
-    const [isLiked, setIsLiked] = useState(post.likes.indexOf(userId) !== -1);
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
     }
@@ -42,10 +41,13 @@ const Card = React.memo(function CardComponent(props){
         )
     };
 
+    const checkLike = () => {
+        let match = post.likes.indexOf(userId) !== -1;
+        return match;
+    }
 
     const toggleLike = async () => {
-        props.toggleLikeHandler(post._id, isLiked);
-        setIsLiked(prevState => !prevState);
+        props.toggleLikeHandler(post._id, checkLike());
     }
 
     return (
@@ -81,7 +83,7 @@ const Card = React.memo(function CardComponent(props){
                         style={styles.cardImage}
                         source={ 
                             post.updated ? (
-                                { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date()}` }
+                                { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date(post.updated)}` }
                             ) : (
                                 { uri: `${ENV.apiUrl}/post/photo/${post._id}` }
                             )
@@ -103,14 +105,20 @@ const Card = React.memo(function CardComponent(props){
                                 { showFullBody ? (
                                     <Text style={styles.description}> 
                                         {post.body} 
-                                        <Text onPress={() => setShowFullBody((prevState) => !prevState)} >
-                                            ...Read Less
+                                        <Text
+                                            style={{ color: Colors.brightBlue }}
+                                            onPress={() => setShowFullBody((prevState) => !prevState)} 
+                                        >
+                                            Read Less
                                         </Text>
                                     </Text>
                                 ) : (
                                     <Text style={styles.description}> 
                                         {post.body.substring(0, 30)}
-                                        <Text onPress={() => setShowFullBody((prevState) => !prevState)} >
+                                        <Text
+                                            style={{ color: Colors.brightBlue }}
+                                            onPress={() => setShowFullBody((prevState) => !prevState)} 
+                                        >
                                             ...Read More
                                         </Text>
                                     </Text>
@@ -135,7 +143,7 @@ const Card = React.memo(function CardComponent(props){
                                     name="md-thumbs-up"
                                     size={24}
                                     style={{ marginRight: 5 }}
-                                    color={isLiked ? 'blue' : "black"}
+                                    color={checkLike() ? 'blue' : "black"}
                                 />
                                 <Text style={styles.socialBarLabel}> {post.likes.length} </Text>
                             </TouchableOpacity>

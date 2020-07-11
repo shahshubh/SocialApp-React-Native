@@ -73,7 +73,7 @@ const ImgPicker = props => {
                 ) : (
                     <Image
                         style={styles.image}
-                        source={{ uri: props.previousUpdate ? `${pickedImage.uri}?${new Date().getMinutes()}` : `${pickedImage.uri}` }}
+                        source={{ uri: props.previousUpdate ? `${pickedImage.uri}?${new Date(props.previousUpdate)}` : `${pickedImage.uri}` }}
                     />
                 ) }
             </View>

@@ -75,7 +75,6 @@ const AddPostScreen = (props) => {
                 props.navigation.goBack();
             } catch (error) {
                 setError(error.message);
-                console.log("TYPE ",imageType);
                 console.log("ERROR ",error.message);
             }
         } 

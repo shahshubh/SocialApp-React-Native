@@ -68,11 +68,12 @@ const AddPostScreen = (props) => {
         setIsLoading(true);
         setError(null);
         if(validatePost()){
+            console.log("VALID POST")
             try {
                 await dispatch(postActions.createPost(title, body, base64Data, imageType));
                 console.log(imageType);
                 clearForm();
-                props.navigation.goBack();
+                props.navigation.navigate('AllPosts')
             } catch (error) {
                 setError(error.message);
                 console.log("ERROR ",error.message);

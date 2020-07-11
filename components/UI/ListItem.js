@@ -1,24 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Image } from 'react-native';
+import { View, Text, StyleSheet, Button, Image, ActivityIndicator } from 'react-native';
 
 import ENV from '../../env';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from '../../constants/Colors';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
+import * as usersActions from '../../store/actions/users';
 
 
 const ListItem = (props) => {
     const { user } = props;
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const loggedInUserId = useSelector(state => state.auth.user._id);
     const allUsers = useSelector(state => state.users.allUsers);
     const loggedInUser = allUsers.filter(u => u._id === loggedInUserId)[0];
     // currUser following list
 
+    const dispatch = useDispatch();
+    const navigation = useNavigation();
+
     const checkFollow = (userId) => {
         const isFollowed = loggedInUser.following.filter(f => f._id === userId).length !== 0;
         return isFollowed;
+    }
+
+    const followUserHandler = async () => {
+        // setIsLoading(true);
+        console.log(user);
+        if(checkFollow(user._id)){
+            await dispatch(usersActions.unfollowUser(user))
+        } else {
+            await dispatch(usersActions.followUser(user))
+        }
+        // setIsLoading(false);
     }
 
 
@@ -43,7 +61,9 @@ const ListItem = (props) => {
             <View style={styles.content}>
                 <View style={styles.mainContent}>
                     <View style={styles.text}>
-                        <Text style={styles.name}>
+                        <Text
+                            style={styles.name}
+                        >
                             { user.name }
                         </Text>
                     </View>
@@ -54,15 +74,25 @@ const ListItem = (props) => {
                 <View style={{ position: 'absolute', right: 0}} >
                     { checkFollow(user._id) ? (
                         <TouchableOpacity
+                            onPress={followUserHandler}
                             style={{  backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 15 }}
                         >
-                            <Text style={{ color: '#fff' }} >UnFollow</Text>
+                            { isLoading ? (
+                                <ActivityIndicator size="small" color="#fff" />
+                            ) : (
+                                <Text style={{ color: '#fff' }} >UnFollow</Text>
+                            ) }
                         </TouchableOpacity>
                     ) : (
                         <TouchableOpacity
+                            onPress={followUserHandler}
                             style={{  backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 15 }}
                         >
-                            <Text style={{ color: '#fff' }} >Follow</Text>
+                            { isLoading ? (
+                                <ActivityIndicator size="small" color="#fff" />
+                            ) : (
+                                <Text style={{ color: '#fff' }} >Follow</Text>
+                            )}
                         </TouchableOpacity>
                     ) }
                 </View>

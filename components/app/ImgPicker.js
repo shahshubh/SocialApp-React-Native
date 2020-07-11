@@ -41,18 +41,28 @@ const ImgPicker = props => {
         return true;
     };
 
-    const takeImageHandler = async () => {
+    const takeImageHandler = async (type) => {
         const hasPermission = await verifyPermissions();
         if(!hasPermission){
             return;
         }
+        let image;
         try {
-            const image = await ImagePicker.launchImageLibraryAsync({
-                allowsEditing: true,
-                base64: true,
-                // aspect: [16, 9],
-                quality: 0.6,
-            });
+            if(type === 'gallery'){
+                image = await ImagePicker.launchImageLibraryAsync({
+                    allowsEditing: true,
+                    base64: true,
+                    // aspect: [16, 9],
+                    quality: 0.6,
+                });
+            } else {
+                image = await ImagePicker.launchCameraAsync({
+                    allowsEditing: true,
+                    base64: true,
+                    // aspect: [16, 9],
+                    quality: 0.6,
+                });
+            }
             if(!image.cancelled){
                 setPickedImage(image);
                 let res = image.uri.split('.');
@@ -78,14 +88,24 @@ const ImgPicker = props => {
                 ) }
             </View>
 
-            <TouchableOpacity 
-                style={[styles.buttonContainer, styles.loginButton]}
-                onPress={takeImageHandler}
-            >
-                <Text style={styles.loginText}>
-                    Pick Image
-                </Text>
-            </TouchableOpacity>
+            <View style={{ flexDirection: 'row' }} >
+                <TouchableOpacity 
+                    style={[styles.buttonContainer, styles.loginButton]}
+                    onPress={takeImageHandler.bind(this, 'gallery')}
+                >
+                    <Text style={styles.loginText}>
+                        Pick Image
+                    </Text>
+                </TouchableOpacity>
+                {/* <TouchableOpacity 
+                    style={[styles.buttonContainer, styles.loginButton]}
+                    onPress={takeImageHandler.bind(this, 'camera')}
+                >
+                    <Text style={styles.loginText}>
+                        Take Image
+                    </Text>
+                </TouchableOpacity> */}
+            </View>
         </View>
     );
 
@@ -117,6 +137,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom: 20,
+        marginRight: 10,
         width: 100,
         borderRadius: 30,
         backgroundColor: 'transparent'

@@ -8,6 +8,7 @@ import {
     RefreshControl,
     ActivityIndicator,
     TouchableOpacity
+    
 } from "react-native";
 
 import { Container, Content, Button } from 'native-base'
@@ -19,9 +20,13 @@ import * as postsActions from '../../store/actions/posts';
 import { useDispatch, useSelector } from "react-redux";
 import ENV from '../../env';
 
+
 const UserProfileScreen = (props) => {
     const { route } = props;
     const loggedInUserId = useSelector(state => state.auth.user._id);
+    const allUsers = useSelector(state => state.users.allUsers);
+    const loggedInUser = allUsers.filter(u => u._id === loggedInUserId)[0];
+
     let userId;
 
     if(route.params && route.params.userId){
@@ -37,6 +42,7 @@ const UserProfileScreen = (props) => {
     
     const [isRefreshing,setIsRefreshing] = useState(false);
     const [isLoading,  setIsLoading] = useState(false);
+    const [isFollowLoading,  setIsFollowLoading] = useState(false);
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${currUser._id}`);
     
     const dispatch = useDispatch();
@@ -57,7 +63,47 @@ const UserProfileScreen = (props) => {
         setImageUri(ENV.defaultImageUri)
     }
 
+
+    const checkFollow = (userId) => {
+        const isFollowed = loggedInUser.following.filter(f => f._id === userId).length !== 0;
+        return isFollowed;
+    }
+
+    const followUserHandler = async () => {
+        let user = {...currUser};
+        delete user.created;
+        delete user.followers;
+        delete user.following;
+        // setIsFollowLoading(true);
+        
+        if(checkFollow(user._id)){
+            await dispatch(usersActions.unfollowUser(user))
+        } else {
+            await dispatch(usersActions.followUser(user))
+        }
+        // setIsFollowLoading(false);
+    }
+
+
+
+
+
+
+
     const renderSectionOne = () => {
+        if(currUserPosts.length === 0){
+            return(
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: '#c2c2c2', borderTopWidth: 1 }} >   
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 25 }} >No Posts</Text>
+                    <Button
+                        style={{ backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 25, marginTop: 15 }}
+                        onPress={() => props.navigation.navigate('AddPost')}
+                    >
+                        <Text style={{ color: '#fff' }} >Create Post</Text>
+                    </Button>
+                </View>
+            )
+        }
         return currUserPosts.map((post, index) => {
             return (
                 <TouchableOpacity 
@@ -144,7 +190,7 @@ const UserProfileScreen = (props) => {
                                     <TouchableOpacity
                                         onPress={() => props.navigation.navigate(
                                             'UserStats',
-                                            { activeTab: 1, currUser: currUser }
+                                            { activeTab: 0, currUser: currUser }
                                         )}
                                     >
                                         <Text> { currUser.followers.length } </Text>
@@ -155,7 +201,7 @@ const UserProfileScreen = (props) => {
                                     <TouchableOpacity
                                         onPress={() => props.navigation.navigate(
                                             'UserStats',
-                                            { activeTab: 2, currUser: currUser }
+                                            { activeTab: 1, currUser: currUser }
                                         )}
                                     >
                                         <Text> { currUser.following.length } </Text>
@@ -167,7 +213,7 @@ const UserProfileScreen = (props) => {
                             {/**
                              * Edit profile and Settings Buttons **/}
 
-                            { userId === loggedInUserId && (
+                            { userId === loggedInUserId ? (
                                 <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 10 }}>
                                     <View
                                         style={{ flexDirection: 'row' }}>
@@ -182,6 +228,36 @@ const UserProfileScreen = (props) => {
                                             <Text>Delete Profile</Text>
                                         </Button>
                                     </View>
+                                </View>
+                            ) : (
+                                <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 10 }}>
+                                    <TouchableOpacity
+                                        style={{ flexDirection: 'row' }}>
+                                        <Button 
+                                            onPress={followUserHandler}
+                                            bordered 
+                                            dark
+                                            style={{ flex: 2, marginLeft: 10, marginRight: 10, justifyContent: 'center', height: 30, backgroundColor: Colors.brightBlue }}
+                                        >
+                                            { checkFollow(currUser._id) ? (
+                                                <>
+                                                    { isFollowLoading ? (
+                                                        <ActivityIndicator size="small" color="#fff" />
+                                                    ) : (
+                                                        <Text style={{ color: '#fff' }} >Unfollow</Text>
+                                                    ) }
+                                                </>
+                                            ) : (
+                                                <>
+                                                    { isFollowLoading ? (
+                                                        <ActivityIndicator size="small" color="#fff" />
+                                                    ) : (
+                                                        <Text style={{ color: '#fff' }} >Follow</Text>
+                                                    ) }
+                                                </>
+                                            ) }
+                                        </Button>
+                                    </TouchableOpacity>
                                 </View>
                             ) }
                             {/**End edit profile**/}

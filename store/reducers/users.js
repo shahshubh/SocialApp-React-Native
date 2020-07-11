@@ -23,17 +23,17 @@ export default (state=initialState, action) => {
             // add other user in following list of logged user
             updatedFollowAllUsers[loggedUserIndex].following = updatedFollowAllUsers[loggedUserIndex].following.concat(action.user);
 
-            console.log("====================================");
-            console.log("====================================");
-            console.log("FOLLOW");
-            console.log("====================================");
-            console.log("Other User");
-            console.log("====================================");
-            console.log(updatedFollowAllUsers[userIndex]);
-            console.log("====================================");
-            console.log("Logged User");
-            console.log("====================================");
-            console.log(updatedFollowAllUsers[loggedUserIndex]);
+            // console.log("====================================");
+            // console.log("====================================");
+            // console.log("FOLLOW");
+            // console.log("====================================");
+            // console.log("Other User");
+            // console.log("====================================");
+            // console.log(updatedFollowAllUsers[userIndex]);
+            // console.log("====================================");
+            // console.log("Logged User");
+            // console.log("====================================");
+            // console.log(updatedFollowAllUsers[loggedUserIndex]);
 
             return{
                 ...state,
@@ -52,20 +52,20 @@ export default (state=initialState, action) => {
             // remove other user from following list of logged user
             updatedUnfollowAllUsers[loggedUserInd].following = updatedUnfollowAllUsers[loggedUserInd].following.filter(u => u._id !== action.user._id);
 
-            console.log("====================================");
-            console.log("FOLLOW");
-            console.log("====================================");
-            console.log("Other User");
-            console.log("====================================");
-            console.log(updatedFollowAllUsers[userIndex]);
-            console.log("====================================");
-            console.log("Logged User");
-            console.log("====================================");
-            console.log(updatedFollowAllUsers[loggedUserIndex]);
+            // console.log("====================================");
+            // console.log("FOLLOW");
+            // console.log("====================================");
+            // console.log("Other User");
+            // console.log("====================================");
+            // console.log(updatedUnfollowAllUsers[userIndex]);
+            // console.log("====================================");
+            // console.log("Logged User");
+            // console.log("====================================");
+            // console.log(updatedUnfollowAllUsers[loggedUserIndex]);
 
             return{
                 ...state,
-                allUsers: updatedFollowAllUsers
+                allUsers: updatedUnfollowAllUsers
             }
 
         default:

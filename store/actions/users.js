@@ -25,6 +25,13 @@ export const followUser = (user) => {
         const token = getState().auth.token;
         const loggedUser = getState().auth.user;
 
+        
+        dispatch({
+            type: FOLLOW,
+            user: user,
+            loggedUser: loggedUser
+        })
+
         const response = await fetch(`${ENV.apiUrl}/user/follow`, {
             method: "PUT",
             headers: {
@@ -39,11 +46,6 @@ export const followUser = (user) => {
             throw new Error(resData.error);
         }
 
-        dispatch({
-            type: FOLLOW,
-            user: user,
-            loggedUser: loggedUser
-        })
     }
 };
 
@@ -53,6 +55,11 @@ export const unfollowUser = (user) => {
         const token = getState().auth.token;
         const loggedUser = getState().auth.user;
 
+        dispatch({
+            type: UNFOLLOW,
+            user: user,
+            loggedUser: loggedUser
+        })
         const response = await fetch(`${ENV.apiUrl}/user/unfollow`, {
             method: "PUT",
             headers: {
@@ -67,11 +74,6 @@ export const unfollowUser = (user) => {
             throw new Error(resData.error);
         }
 
-        dispatch({
-            type: UNFOLLOW,
-            user: user,
-            loggedUser: loggedUser
-        })
     }
 };
 

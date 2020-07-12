@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import * as usersActions from '../../store/actions/users';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 const ListItem = (props) => {
@@ -30,10 +31,21 @@ const ListItem = (props) => {
 
     const followUserHandler = async () => {
         // setIsLoading(true);
-        console.log(user);
         if(checkFollow(user._id)){
+            showMessage({
+                message: `Your have unfollowed ${user.name}.`,
+                type: "warning",
+                duration: 3000,
+                icon: { icon: "warning", position: 'left' }
+            });
             await dispatch(usersActions.unfollowUser(user))
         } else {
+            showMessage({
+                message: `Your are now following ${user.name}.`,
+                type: "success",
+                duration: 3000,
+                icon: { icon: "success", position: 'left' }
+            });
             await dispatch(usersActions.followUser(user))
         }
         // setIsLoading(false);

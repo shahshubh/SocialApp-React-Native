@@ -3,6 +3,8 @@ import ENV from '../../env';
 export const SET_USERS = 'SET_USERS';
 export const FOLLOW = 'FOLLOW';
 export const UNFOLLOW = 'UNFOLLOW';
+export const SET_FIND_PEOPLE = 'SET_FIND_PEOPLE';
+export const FOLLOW_FIND_PEOPLE = 'FOLLOW_FIND_PEOPLE';
 
 export const fetchUsers = () => {
     return async (dispatch, getState) => {
@@ -77,3 +79,38 @@ export const unfollowUser = (user) => {
     }
 };
 
+
+export const fetchFindPeopleUsers = () => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
+        const loggedUserId = getState().auth.user._id
+
+        const response = await fetch(`${ENV.apiUrl}/user/findpeople/${loggedUserId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            }
+        });
+
+        const resData = await response.json();
+        if(resData.error){
+            throw new Error(resData.error);
+        }
+
+        dispatch({
+            type: SET_FIND_PEOPLE,
+            users: resData
+        })
+    }
+};
+
+
+export const followFindPeople = (userId) => {
+    return async (dispatch, getState) => {
+        dispatch({
+            type: FOLLOW_FIND_PEOPLE,
+            userId: userId
+        })
+    }
+};

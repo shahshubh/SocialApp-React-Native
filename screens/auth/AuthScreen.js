@@ -12,7 +12,7 @@ import {
     KeyboardAvoidingView
 } from 'react-native';
 
-
+import { showMessage, hideMessage } from "react-native-flash-message";
 import * as authActions from '../../store/actions/auth';
 import { useDispatch } from 'react-redux';
 import Colors from '../../constants/Colors';
@@ -26,7 +26,6 @@ const AuthScreen = (props) => {
 
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [success, setSuccess] = useState(null);
 
 
     const dispatch = useDispatch();
@@ -71,13 +70,18 @@ const AuthScreen = (props) => {
 
     const AuthHandler = async () => {
         setError(null);
-        setSuccess(null);
         setIsLoading(true);
         if(validateAuthForm()){
             if(isSignup){
                 try {
                     const msg = await dispatch(authActions.signup(name, email, password))
-                    setSuccess(msg);
+                    showMessage({
+                        message: "Signup Success",
+                        description: 'Please Login !',
+                        type: "success",
+                        icon: { icon: "success", position: 'left' },
+                        duration: 3000
+                    });
                     setIsSignUp(false);
                     setName('');
                     setEmail('');
@@ -89,6 +93,12 @@ const AuthScreen = (props) => {
             } else {
                 try {
                     await dispatch(authActions.signin(email, password))
+                    showMessage({
+                        message: "Signed in success",
+                        type: "success",
+                        icon: { icon: "success", position: 'left' },
+                        duration: 3000
+                    });
                 } catch (error) {
                     setError(error.message);
                     setIsLoading(false);
@@ -106,7 +116,6 @@ const AuthScreen = (props) => {
             setPassword(text)
         }
         setError(null);
-        setSuccess(null);
     }
 
 
@@ -121,12 +130,6 @@ const AuthScreen = (props) => {
                     <View style={styles.errorMsgContainer} >
                         <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
                         <Text style={styles.msgText}> {error} </Text>
-                    </View>
-                )}
-                { success !== null && (
-                    <View style={styles.successMsgContainer} >
-                        <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/Q9BGTuy.png" }} />
-                        <Text style={styles.msgText}> {success} </Text>
                     </View>
                 )}
 

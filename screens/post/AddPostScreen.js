@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import * as postActions from '../../store/actions/posts';
 import ImgPicker from '../../components/app/ImgPicker';
 import Colors from '../../constants/Colors';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const AddPostScreen = (props) => {
 
@@ -71,9 +72,14 @@ const AddPostScreen = (props) => {
             console.log("VALID POST")
             try {
                 await dispatch(postActions.createPost(title, body, base64Data, imageType));
-                console.log(imageType);
                 clearForm();
                 props.navigation.navigate('AllPosts')
+                showMessage({
+                    message: "Your post was successfully created.",
+                    type: "success",
+                    duration: 3000,
+                    icon: { icon: "success", position: 'left' }
+                });
             } catch (error) {
                 setError(error.message);
                 console.log("ERROR ",error.message);

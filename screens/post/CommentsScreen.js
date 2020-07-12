@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import * as postsActions from '../../store/actions/posts';
 import Colors from '../../constants/Colors';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const CommentsScreen = (props) => {
 
@@ -75,6 +76,12 @@ const CommentsScreen = (props) => {
                     style: 'destructive', 
                     onPress: async () => {
                         try {
+                            showMessage({
+                                message: `Your comment was deleted.`,
+                                type: "warning",
+                                duration: 3000,
+                                icon: { icon: "warning", position: 'left' }
+                            });
                             await dispatch(postsActions.uncommentPost(postId,comment))
                         } catch (error) {
                             Alert.alert(

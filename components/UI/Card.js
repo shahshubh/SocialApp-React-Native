@@ -9,6 +9,7 @@ import Colors from '../../constants/Colors';
 import ENV from '../../env';
 import { useDispatch } from 'react-redux';
 import * as postActions from '../../store/actions/posts';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const Card = React.memo(function CardComponent(props){
     const { post, userId } = props;
@@ -33,8 +34,14 @@ const Card = React.memo(function CardComponent(props){
                 {
                     text: 'Yes', 
                     style: 'destructive', 
-                    onPress: () => {
-                        dispatch(postActions.deletePost(id))
+                    onPress: async () => {
+                        await dispatch(postActions.deletePost(id))
+                        showMessage({
+                            message: "Your post was successfully deleted.",
+                            type: "success",
+                            icon: { icon: "success", position: 'left' },
+                            duration: 3000
+                        });
                     }
                 }
             ]

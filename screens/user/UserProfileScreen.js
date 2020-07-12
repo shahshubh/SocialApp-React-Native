@@ -7,7 +7,9 @@ import {
     Dimensions,
     RefreshControl,
     ActivityIndicator,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableNativeFeedback,
+    TouchableHighlight
     
 } from "react-native";
 
@@ -15,10 +17,15 @@ import { Container, Content, Button } from 'native-base'
 var { height, width } = Dimensions.get('window');
 
 import Colors from '../../constants/Colors';
+
 import * as usersActions from '../../store/actions/users';
 import * as postsActions from '../../store/actions/posts';
+import * as authActions from '../../store/actions/auth';
+
 import { useDispatch, useSelector } from "react-redux";
 import ENV from '../../env';
+import MenuItem from "../../components/UI/MenuItem";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 const UserProfileScreen = (props) => {
@@ -77,8 +84,20 @@ const UserProfileScreen = (props) => {
         // setIsFollowLoading(true);
         
         if(checkFollow(user._id)){
+            showMessage({
+                message: `Your have unfollowed ${user.name}.`,
+                type: "warning",
+                duration: 3000,
+                icon: { icon: "warning", position: 'left' }
+            });
             await dispatch(usersActions.unfollowUser(user))
         } else {
+            showMessage({
+                message: `Your are now following ${user.name}.`,
+                type: "success",
+                duration: 3000,
+                icon: { icon: "success", position: 'left' }
+            });
             await dispatch(usersActions.followUser(user))
         }
         // setIsFollowLoading(false);
@@ -91,16 +110,19 @@ const UserProfileScreen = (props) => {
 
 
     const renderSectionOne = () => {
-        if(currUserPosts.length === 0){
+        if(currUserPosts.length === 0 ){
             return(
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', borderTopColor: '#c2c2c2', borderTopWidth: 1 }} >   
                     <Text style={{ fontSize: 20, fontWeight: 'bold', marginTop: 25 }} >No Posts</Text>
-                    <Button
-                        style={{ backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 25, marginTop: 15 }}
-                        onPress={() => props.navigation.navigate('AddPost')}
-                    >
-                        <Text style={{ color: '#fff' }} >Create Post</Text>
-                    </Button>
+                    { currUser._id === loggedInUserId && (
+                        <Button
+                            style={{ backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 25, marginTop: 15 }}
+                            onPress={() => props.navigation.navigate('AddPost')}
+                        >
+                            <Text style={{ color: '#fff' }} >Create Post</Text>
+                        </Button>
+                    ) }
+                    
                 </View>
             )
         }
@@ -209,23 +231,20 @@ const UserProfileScreen = (props) => {
                                     <Text style={{ fontSize: 10, color: 'grey' }}>Following</Text>
                                 </View>
                             </View>
-                            
                             {/**
                              * Edit profile and Settings Buttons **/}
 
                             { userId === loggedInUserId ? (
-                                <View style={{ flexDirection: 'row', alignItems: 'flex-start', paddingTop: 10 }}>
+                                <View style={{ alignItems: 'flex-start', paddingTop: 10 }}>
                                     <View
                                         style={{ flexDirection: 'row' }}>
                                         {/** Edit profile takes up 3/4th **/}
-                                        <Button bordered dark
-                                            style={{ flex: 2, marginLeft: 10, justifyContent: 'center', height: 30 }}><Text>Edit Profile</Text></Button>
                                         <Button 
-                                            bordered 
+                                            bordered
                                             dark
-                                            style={{ flex: 2, marginLeft: 10, marginRight: 10, backgroundColor: 'red', justifyContent: 'center', height: 30 }}
+                                            style={{ flex: 1, marginLeft: 10, marginRight: 10, justifyContent: 'center', height: 30 }}
                                         >
-                                            <Text>Delete Profile</Text>
+                                            <Text>Edit Profile</Text>
                                         </Button>
                                     </View>
                                 </View>
@@ -292,9 +311,20 @@ const UserProfileScreen = (props) => {
 export const screenOptions = (navData) => {
 
     const routeParams = navData.route.params ? navData.route.params : {};
-    return{
-        headerTitle: routeParams.name ? routeParams.name : "Profile"
+    if(!routeParams.name){
+        return{
+            headerTitle: routeParams.name ? routeParams.name : "Profile",
+            headerRight: () => (
+                <MenuItem />
+            )
+        }
+    } else {
+        return{
+            headerTitle: routeParams.name ? routeParams.name : "Profile",
+        }
     }
+
+    
 }
 
 

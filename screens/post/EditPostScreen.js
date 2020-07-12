@@ -7,6 +7,7 @@ import ImgPicker from '../../components/app/ImgPicker';
 import Colors from '../../constants/Colors';
 
 import ENV from '../../env';
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const EditPostScreen = (props) => {
 
@@ -62,6 +63,12 @@ const EditPostScreen = (props) => {
                 await dispatch(postActions.updatePost(postId, title, body, base64Data, imageType));
                 clearForm();
                 props.navigation.goBack();
+                showMessage({
+                    message: "Your post was successfully edited.",
+                    type: "success",
+                    duration: 3000,
+                    icon: { icon: "success", position: 'left' }
+                });
             } catch (error) {
                 setError(error.message);
                 console.log("ERROR ",error.message);

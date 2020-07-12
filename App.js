@@ -2,12 +2,15 @@ import React from 'react';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import ReduxThunk from 'redux-thunk';
+import FlashMessage from "react-native-flash-message";
+import { MenuProvider } from 'react-native-popup-menu';
 // import { composeWithDevTools } from 'redux-devtools-extension';
 
 import authReducer from './store/reducers/auth';
 import postsReducer from './store/reducers/posts';
 import usersReducer from './store/reducers/users';
 import AppNavigator from './navigation/AppNavigator';
+
 
 
 const rootReducer = combineReducers({
@@ -25,7 +28,10 @@ const store = createStore(
 export default function App() {
   return (
     <Provider store={store}>
-      <AppNavigator />
+      <MenuProvider>
+        <AppNavigator />
+      </MenuProvider>
+      <FlashMessage position="top" />
     </Provider>
   );
 }

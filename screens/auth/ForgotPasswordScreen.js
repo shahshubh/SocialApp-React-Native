@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
 } from 'react-native';
 
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import * as authActions from '../../store/actions/auth';
 import { useDispatch } from 'react-redux';
@@ -20,7 +21,6 @@ const ForgotPasswordScreen = () => {
 
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [success, setSuccess] = useState(null);
 
     const dispatch = useDispatch();
 
@@ -37,12 +37,16 @@ const ForgotPasswordScreen = () => {
 
     const AuthHandler = async () => {
         setError(null);
-        setSuccess(null);
         setIsLoading(true);
         if(validateAuthForm()){
             try {
                 const msg = await dispatch(authActions.forgotPassword(email))
-                setSuccess(msg);
+                showMessage({
+                    message: msg,
+                    type: "success",
+                    icon: { icon: "success", position: 'left' },
+                    duration: 4000
+                });
                 setEmail('');
             } catch (error) {
                 setError(error.message);
@@ -61,14 +65,6 @@ const ForgotPasswordScreen = () => {
                         <Text style={styles.msgText}> {error} </Text>
                     </View>
                 )}
-                { success !== null && (
-                    <View style={styles.successMsgContainer} >
-                        <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/Q9BGTuy.png" }} />
-                        <Text style={styles.msgText}> {success} </Text>
-                    </View>
-                )}
-
-                
                 <View style={styles.inputContainer}>
                     <TextInput style={styles.inputs}
                         placeholder="Email"

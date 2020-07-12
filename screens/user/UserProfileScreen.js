@@ -50,7 +50,7 @@ const UserProfileScreen = (props) => {
     const [isRefreshing,setIsRefreshing] = useState(false);
     const [isLoading,  setIsLoading] = useState(false);
     const [isFollowLoading,  setIsFollowLoading] = useState(false);
-    const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${currUser._id}`);
+    const [imageUri, setImageUri] = useState('');
     
     const dispatch = useDispatch();
 
@@ -186,7 +186,7 @@ const UserProfileScreen = (props) => {
                         <View
                             style={{ flex: 1, alignItems: 'center', justifyContent: 'flex-start' }}>
                             <Image 
-                                source={{ uri: imageUri }}
+                                source={{ uri: imageUri || `${ENV.apiUrl}/user/photo/${currUser._id}?${new Date(currUser.updated)}` }}
                                 onError={onImageErrorHandler}
                                 style={{ width: 75, height: 75, borderRadius: 37.5, backgroundColor: "#c2c2c2" }}
                             />
@@ -238,8 +238,8 @@ const UserProfileScreen = (props) => {
                                 <View style={{ alignItems: 'flex-start', paddingTop: 10 }}>
                                     <View
                                         style={{ flexDirection: 'row' }}>
-                                        {/** Edit profile takes up 3/4th **/}
-                                        <Button 
+                                        <Button
+                                            onPress={() => props.navigation.navigate('EditProfile')}
                                             bordered
                                             dark
                                             style={{ flex: 1, marginLeft: 10, marginRight: 10, justifyContent: 'center', height: 30 }}
@@ -256,14 +256,14 @@ const UserProfileScreen = (props) => {
                                             onPress={followUserHandler}
                                             bordered 
                                             dark
-                                            style={{ flex: 2, marginLeft: 10, marginRight: 10, justifyContent: 'center', height: 30, backgroundColor: Colors.brightBlue }}
+                                            style={{ flex: 2, marginLeft: 10, marginRight: 10, justifyContent: 'center', height: 30 }}
                                         >
                                             { checkFollow(currUser._id) ? (
                                                 <>
                                                     { isFollowLoading ? (
                                                         <ActivityIndicator size="small" color="#fff" />
                                                     ) : (
-                                                        <Text style={{ color: '#fff' }} >Unfollow</Text>
+                                                        <Text style={{ color: 'black' }} >Unfollow</Text>
                                                     ) }
                                                 </>
                                             ) : (
@@ -271,7 +271,7 @@ const UserProfileScreen = (props) => {
                                                     { isFollowLoading ? (
                                                         <ActivityIndicator size="small" color="#fff" />
                                                     ) : (
-                                                        <Text style={{ color: '#fff' }} >Follow</Text>
+                                                        <Text style={{ color: 'black' }} >Follow</Text>
                                                     ) }
                                                 </>
                                             ) }

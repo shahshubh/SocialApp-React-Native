@@ -1,6 +1,7 @@
 import ENV from '../../env';
 
 export const SET_USERS = 'SET_USERS';
+export const UPDATE_USER = 'UPDATE_USER';
 export const FOLLOW = 'FOLLOW';
 export const UNFOLLOW = 'UNFOLLOW';
 export const SET_FIND_PEOPLE = 'SET_FIND_PEOPLE';
@@ -112,5 +113,44 @@ export const followFindPeople = (userId) => {
             type: FOLLOW_FIND_PEOPLE,
             userId: userId
         })
+    }
+};
+
+
+export const updateProfile = (name, email, about, password, base64Data, imageType) => {
+    return async (dispatch, getState) => {
+        const token = getState().auth.token;
+        const loggedUserId = getState().auth.user._id;
+
+        let userData;
+        if( (!base64Data || !imageType || (base64Data === '' && imageType === '')) && password === ''){
+            userData = { name, email, about }
+        } else if((!base64Data || !imageType || (base64Data === '' && imageType === '')) && password !== '') {
+            userData = { name, email, about, password } 
+        } else if ((base64Data !== '' && imageType !== '') && password === ''){
+            userData = { name, email, about, base64Data, imageType } 
+        } else {
+            userData = { name, email, about, password, base64Data, imageType } 
+        }
+
+        const response = await fetch(`${ENV.apiUrl}/rn/user/${loggedUserId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify(userData)
+        })
+
+        const resData = await response.json();
+        if(resData.error){
+            throw new Error(resData.error);
+        }
+
+        dispatch({
+            type: UPDATE_USER,
+            user: resData
+        })
+
     }
 };

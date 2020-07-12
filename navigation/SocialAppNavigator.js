@@ -15,6 +15,7 @@ import UserProfileScreen, { screenOptions as userProfileScreenOptions } from '..
 import FindPeopleScreen from '../screens/user/FindPeopleScreen';
 import UserStatsScreen from '../screens/user/UserStatsScreen';
 import UserPostsScreen, {screenOptions as userPostsScreenOptions} from '../screens/user/UserPostsScreen';
+import EditProfileScreen from '../screens/user/EditProfileScreen';
 
 import AuthScreen from '../screens/auth/AuthScreen';
 import ForgotPasswordScreen, {screenOptions as forgotPasswordScreenOptions} from '../screens/auth/ForgotPasswordScreen';
@@ -77,14 +78,32 @@ const FindPeopleStackNavigator = createStackNavigator();
 
 const FindPeopleNavigator = () => {
     return(
-        <PostStackNavigator.Navigator
+        <FindPeopleStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
-            <PostStackNavigator.Screen 
+            <FindPeopleStackNavigator.Screen 
                 name="Find" 
                 component={FindPeopleScreen} 
             />
-        </PostStackNavigator.Navigator>
+            <FindPeopleStackNavigator.Screen 
+                name="UserProfile"
+                component={UserProfileScreen}
+                options={userProfileScreenOptions}
+            />
+            <FindPeopleStackNavigator.Screen 
+                name="UserStats"
+                component={UserStatsScreen} 
+            />
+            <FindPeopleStackNavigator.Screen
+                name="UserPosts"
+                component={UserPostsScreen}
+                options={userPostsScreenOptions}
+            />
+            <FindPeopleStackNavigator.Screen
+                name="Comments"
+                component={CommentsScreen} 
+            />
+        </FindPeopleStackNavigator.Navigator>
     );
 };
 
@@ -126,6 +145,10 @@ const UserNavigator = () => {
                 name="UserPosts"
                 component={UserPostsScreen}
                 options={userPostsScreenOptions}
+            />
+            <UserStackNavigator.Screen
+                name="EditProfile"
+                component={EditProfileScreen}
             />
         </UserStackNavigator.Navigator>
     );

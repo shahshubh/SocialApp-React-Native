@@ -44,7 +44,10 @@ const UserList = (props) => {
     }
 
     return (
-        <TouchableOpacity style={styles.card}>
+        <TouchableOpacity 
+            onPress={() => navigation.navigate('UserProfile', {userId: item._id, name: item.name} )}
+            style={styles.card}
+        >
             <Image 
                 style={styles.userImage} 
                 source={{ uri: imageUri }}
@@ -53,12 +56,22 @@ const UserList = (props) => {
             <View style={styles.cardFooter}>
                 <View style={{ alignItems: "center", justifyContent: "center" }}>
                     <Text
-                        onPress={() => navigation.navigate('UserProfile', { userId: item._id, name: item.name })}
+                        onPress={() => navigation.navigate('UserProfile',{ userId: item._id, name: item.name} )}
                         style={styles.name}
                     >
-                        {item.name}
+                        {item.name.length > 10 ? (
+                            <>{item.name.substring(0,10)}...</>
+                        ) : (
+                            <>{item.name}</>
+                        )}
                     </Text>
-                    <Text style={styles.position}>{item.email}</Text>
+                    <Text style={styles.position}>
+                        {item.email.length > 15 ? (
+                            <>{item.email.substring(0,15)}...</>
+                        ) : (
+                            <>{item.email}</>
+                        )}
+                    </Text>
                     <TouchableOpacity style={styles.followButton}>
                         <Text
                             onPress={followUserHandler}
@@ -73,17 +86,6 @@ const UserList = (props) => {
 
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    list: {
-        paddingHorizontal: 5,
-        backgroundColor: "#E6E6E6",
-    },
-    listContainer: {
-        alignItems: 'center'
-    },
-    /******** card **************/
     card: {
         shadowColor: '#00000021',
         shadowOffset: {
@@ -98,6 +100,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         flexBasis: '46%',
         marginHorizontal: 5,
+        borderRadius: 25
     },
     cardFooter: {
         paddingVertical: 17,
@@ -152,7 +155,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 30,
-        backgroundColor: "#00BFFF",
+        backgroundColor: Colors.brightBlue
     },
     followButtonText: {
         color: "#FFFFFF",

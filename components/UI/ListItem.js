@@ -74,6 +74,7 @@ const ListItem = (props) => {
                 <View style={styles.mainContent}>
                     <View style={styles.text}>
                         <Text
+                            onPress={() => navigation.navigate('Home', { screen: 'UserProfile', params: { userId: user._id, name: user.name }})}
                             style={styles.name}
                         >
                             { user.name }

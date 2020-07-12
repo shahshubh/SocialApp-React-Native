@@ -1,4 +1,4 @@
-import { SET_USERS, FOLLOW, UNFOLLOW, SET_FIND_PEOPLE, FOLLOW_FIND_PEOPLE } from "../actions/users";
+import { SET_USERS, FOLLOW, UNFOLLOW, SET_FIND_PEOPLE, FOLLOW_FIND_PEOPLE, UPDATE_USER } from "../actions/users";
 
 const initialState = {
     allUsers: [],
@@ -53,6 +53,17 @@ export default (state=initialState, action) => {
             return{
                 ...state,
                 findPeople: updatedFindPeople
+            }
+
+        case UPDATE_USER:
+            const index = state.allUsers.findIndex(user => user._id === action.user._id);
+            const updatedAllUsers = [...state.allUsers]
+            delete action.user.photo;
+            updatedAllUsers[index] = action.user;
+            console.log(updatedAllUsers[index]);
+            return{
+                ...state,
+                allUsers: updatedAllUsers
             }
 
         default:

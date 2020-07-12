@@ -11,7 +11,7 @@ import { useDispatch } from 'react-redux';
 import * as postActions from '../../store/actions/posts';
 import { showMessage, hideMessage } from "react-native-flash-message";
 
-const Card = React.memo(function CardComponent(props){
+const Card = (props) => {
     const { post, userId } = props;
     const navigation = useNavigation();
     const dispatch = useDispatch();
@@ -19,7 +19,7 @@ const Card = React.memo(function CardComponent(props){
     // const liked = post.likes.indexOf(userId) !== -1;
 
     const [isImageLoading, setIsImageLoading] = useState(true);
-    const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${post.postedBy._id}`)
+    const [imageUri, setImageUri] = useState('')
     const [showFullBody, setShowFullBody] = useState(false);
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
@@ -65,7 +65,7 @@ const Card = React.memo(function CardComponent(props){
                         <View style={styles.timeContainer}>
                             <Image
                                 style={styles.userIcon} 
-                                source={{ uri: imageUri }}
+                                source={{ uri: imageUri || `${ENV.apiUrl}/user/photo/${post.postedBy._id}?${new Date(post.postedBy.updated)}` }}
                                 onError={onImageErrorHandler}
                             />
                             <Text 
@@ -218,7 +218,7 @@ const Card = React.memo(function CardComponent(props){
             </View>
         </View>
     );
-});
+};
 
 const styles = StyleSheet.create({
     screen: {

@@ -16,7 +16,7 @@ import { timeDifference } from '../../helpers/timeDifference';
 const Comment = (props) => {
 
     const { comment, deleteCommentHandler, userId } = props;
-    const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${comment.postedBy._id}`)
+    const [imageUri, setImageUri] = useState('')
 
 
     const onImageErrorHandler = () => {
@@ -32,7 +32,7 @@ const Comment = (props) => {
             <TouchableOpacity onPress={() => { }}>
                 <Image 
                     style={styles.image} 
-                    source={{ uri: imageUri }} 
+                    source={{ uri: imageUri || `${ENV.apiUrl}/user/photo/${comment.postedBy._id}?${new Date(comment.postedBy.updated)}` }} 
                     onError={onImageErrorHandler}
                 />
             </TouchableOpacity>

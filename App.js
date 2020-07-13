@@ -9,14 +9,15 @@ import { MenuProvider } from 'react-native-popup-menu';
 import authReducer from './store/reducers/auth';
 import postsReducer from './store/reducers/posts';
 import usersReducer from './store/reducers/users';
+import chatReducer from './store/reducers/chat';
 import AppNavigator from './navigation/AppNavigator';
-
 
 
 const rootReducer = combineReducers({
   auth: authReducer,
   posts: postsReducer,
-  users: usersReducer
+  users: usersReducer,
+  chat: chatReducer
 });
 
 const store = createStore(
@@ -26,6 +27,7 @@ const store = createStore(
 );
 
 export default function App() {
+
   return (
     <Provider store={store}>
       <MenuProvider>

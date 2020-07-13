@@ -1,14 +1,15 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, Button } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, Button, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
-
+import { Ionicons } from '@expo/vector-icons'
 
 import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
 
 import * as postsActions from '../../store/actions/posts';
 import * as usersActions from '../../store/actions/users';
+import * as chatActions from '../../store/actions/chat';
 
 
 const AllPostsScreen = (props) => {
@@ -31,6 +32,7 @@ const AllPostsScreen = (props) => {
         try {
             await dispatch(postsActions.fetchPosts());
             await dispatch(usersActions.fetchUsers());
+            await dispatch(chatActions.fetchChatList());
 
         } catch (err) {
             setError(err.message);
@@ -132,6 +134,24 @@ const AllPostsScreen = (props) => {
         </View>
     );
 };
+
+
+
+export const screenOptions = (navData) => {
+    return{
+        headerTitle: 'SocialApp',
+        headerRight: () => (
+            <Ionicons
+                name={Platform.OS === 'android' ? 'md-chatboxes' : 'ios-chatboxes'}
+                size = {24}
+                color='#fff'
+                style={{ marginRight: 10 }}
+                onPress={() => navData.navigation.navigate('ChatList')}
+            />
+        )
+    };
+}
+
 
 const styles = StyleSheet.create({
     screen: {

@@ -20,7 +20,7 @@ export const fetchPosts = () => {
             throw new Error(resData.error);
         }
 
-        console.log(resData[0]);
+        // console.log(resData[0]);
         dispatch({
             type: SET_POSTS,
             posts: resData

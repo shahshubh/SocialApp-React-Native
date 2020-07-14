@@ -21,7 +21,7 @@ const AllPostsScreen = (props) => {
     const refPosts = useRef(null);
 
     const posts = useSelector(state => state.posts.allPosts);
-    const userId = useSelector(state => state.auth.user._id);
+    const loggedUser = useSelector(state => state.auth.user);
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
@@ -53,6 +53,8 @@ const AllPostsScreen = (props) => {
             console.log("ERROR ", error)
         }
     }
+
+
 
     // useEffect(() => {
     //     const unsubscribe = props.navigation.addListener('focus', loadPosts);
@@ -126,7 +128,7 @@ const AllPostsScreen = (props) => {
                 }}
                 renderItem={(post) => {
                     return (
-                        <Card post={post.item} userId={userId} toggleLikeHandler={toggleLikeHandler} />
+                        <Card post={post.item} userId={loggedUser._id} toggleLikeHandler={toggleLikeHandler} />
                     )
                 }} 
             />
@@ -145,7 +147,7 @@ export const screenOptions = (navData) => {
                 name={Platform.OS === 'android' ? 'md-chatboxes' : 'ios-chatboxes'}
                 size = {24}
                 color='#fff'
-                style={{ marginRight: 10 }}
+                style={{  padding: 15 }}
                 onPress={() => navData.navigation.navigate('ChatList')}
             />
         )

@@ -12,9 +12,9 @@ let socket;
 
 const ChatScreen = (props) => {
     const dispatch = useDispatch();
-
     const { route } = props;
     const user = route.params.user;
+
     const userId = user._id;
     const loggedUser = useSelector(state => state.auth.user);
 
@@ -28,25 +28,28 @@ const ChatScreen = (props) => {
             user: {
                 _id: c.sender._id,
                 name: c.sender.name,
-                // avatar: 
             }
         }
     }).reverse();
 
     const [text, setText] = useState('');
     const [messages, setMessages] = useState(resultChats);
-    const [socketIo, setSocketIo] = useState();
+
 
     useEffect(() => {
-        socket = socketIO('http://192.168.0.106:8080')
-        socket.connect();
+        console.log("COnneCT USE effect")
+        socket = socketIO.connect('http://192.168.0.106:8080')
         socket.on('connect', () => {
-            console.log('connected')
+            console.log('connected chat screen')
             socket.emit('userInfo', loggedUser);
         })
+
     }, [])
 
+
+
     useEffect(() => {
+        console.log("USE EFFECT");
         socket.on('message', (newChat) => {
             console.log("New message");
             if( newChat.sender._id === loggedUser._id || newChat.sender._id === userId ){
@@ -64,8 +67,8 @@ const ChatScreen = (props) => {
             }
             dispatch(chatActions.addChat(newChat))
         })
-    }, [])
-    
+    }, [setMessages])
+
     const onSend = useCallback((messages = []) => {
         socket.emit('sendMessage', messages[0].text, loggedUser, user,  () => {
             // console.log('sent ', messages);
@@ -94,7 +97,7 @@ export const screenOptions = (navData) => {
 
     const routeParams = navData.route.params;
     return {
-        headerTitle: routeParams.name
+        headerTitle: routeParams.user.name
     }
 }
 

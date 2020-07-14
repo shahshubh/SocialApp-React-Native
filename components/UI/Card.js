@@ -88,13 +88,7 @@ const Card = (props) => {
                 <View style={styles.cardImageContainer} >
                     <Image 
                         style={styles.cardImage}
-                        source={ 
-                            post.updated ? (
-                                { uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date(post.updated)}` }
-                            ) : (
-                                { uri: `${ENV.apiUrl}/post/photo/${post._id}` }
-                            )
-                        }
+                        source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date(post.updated)}` }}
                         onLoad={() => setIsImageLoading(false)}
                     />
                     <ActivityIndicator 

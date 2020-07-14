@@ -14,14 +14,14 @@ import ProfileScreen from '../screens/user/ProfileScreen';
 import UserProfileScreen, { screenOptions as userProfileScreenOptions } from '../screens/user/UserProfileScreen';
 import FindPeopleScreen from '../screens/user/FindPeopleScreen';
 import UserStatsScreen from '../screens/user/UserStatsScreen';
-import UserPostsScreen, {screenOptions as userPostsScreenOptions} from '../screens/user/UserPostsScreen';
+import UserPostsScreen, { screenOptions as userPostsScreenOptions } from '../screens/user/UserPostsScreen';
 import EditProfileScreen from '../screens/user/EditProfileScreen';
 
 import ChatListScreen from '../screens/chat/ChatListScreen';
-import ChatScreen, {screenOptions as chatScreenOptions} from '../screens/chat/ChatScreen';
+import ChatScreen, { screenOptions as chatScreenOptions } from '../screens/chat/ChatScreen';
 
 import AuthScreen from '../screens/auth/AuthScreen';
-import ForgotPasswordScreen, {screenOptions as forgotPasswordScreenOptions} from '../screens/auth/ForgotPasswordScreen';
+import ForgotPasswordScreen, { screenOptions as forgotPasswordScreenOptions } from '../screens/auth/ForgotPasswordScreen';
 
 
 const defaultNavOptions = {
@@ -38,26 +38,39 @@ const defaultNavOptions = {
 };
 
 
+const getTabBarVisibility = (route) => {
+    const routeName = route.state
+        ? route.state.routes[route.state.index].name
+        : '';
+
+    if (routeName === 'Chat' ) {
+        return false;
+    }
+
+    return true;
+}
+
+
 const PostStackNavigator = createStackNavigator();
 
 const PostNavigator = () => {
-    return(
+    return (
         <PostStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
-            <PostStackNavigator.Screen 
-                name="AllPosts" 
+            <PostStackNavigator.Screen
+                name="AllPosts"
                 component={AllPostsScreen}
                 options={allPostsScreenOptions}
             />
-            <PostStackNavigator.Screen 
+            <PostStackNavigator.Screen
                 name="UserProfile"
                 component={UserProfileScreen}
                 options={userProfileScreenOptions}
             />
-            <PostStackNavigator.Screen 
+            <PostStackNavigator.Screen
                 name="UserStats"
-                component={UserStatsScreen} 
+                component={UserStatsScreen}
             />
             <PostStackNavigator.Screen
                 name="UserPosts"
@@ -66,18 +79,19 @@ const PostNavigator = () => {
             />
             <PostStackNavigator.Screen
                 name="Comments"
-                component={CommentsScreen} 
+                component={CommentsScreen}
+
             />
-            <PostStackNavigator.Screen 
-                name="EditPost" 
-                component={EditPostScreen} 
+            <PostStackNavigator.Screen
+                name="EditPost"
+                component={EditPostScreen}
             />
-            <PostStackNavigator.Screen 
-                name="ChatList" 
-                component={ChatListScreen} 
+            <PostStackNavigator.Screen
+                name="ChatList"
+                component={ChatListScreen}
             />
-            <PostStackNavigator.Screen 
-                name="Chat" 
+            <PostStackNavigator.Screen
+                name="Chat"
                 component={ChatScreen}
                 options={chatScreenOptions}
             />
@@ -90,22 +104,22 @@ const PostNavigator = () => {
 const FindPeopleStackNavigator = createStackNavigator();
 
 const FindPeopleNavigator = () => {
-    return(
+    return (
         <FindPeopleStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
-            <FindPeopleStackNavigator.Screen 
-                name="Find" 
-                component={FindPeopleScreen} 
+            <FindPeopleStackNavigator.Screen
+                name="Find"
+                component={FindPeopleScreen}
             />
-            <FindPeopleStackNavigator.Screen 
+            <FindPeopleStackNavigator.Screen
                 name="UserProfile"
                 component={UserProfileScreen}
                 options={userProfileScreenOptions}
             />
-            <FindPeopleStackNavigator.Screen 
+            <FindPeopleStackNavigator.Screen
                 name="UserStats"
-                component={UserStatsScreen} 
+                component={UserStatsScreen}
             />
             <FindPeopleStackNavigator.Screen
                 name="UserPosts"
@@ -114,9 +128,9 @@ const FindPeopleNavigator = () => {
             />
             <FindPeopleStackNavigator.Screen
                 name="Comments"
-                component={CommentsScreen} 
+                component={CommentsScreen}
             />
-            
+
         </FindPeopleStackNavigator.Navigator>
     );
 };
@@ -125,7 +139,7 @@ const FindPeopleNavigator = () => {
 const CreatePostStackNavigator = createStackNavigator();
 
 const CreatePostNavigator = () => {
-    return(
+    return (
         <CreatePostStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
@@ -142,7 +156,7 @@ const CreatePostNavigator = () => {
 const UserStackNavigator = createStackNavigator();
 
 const UserNavigator = () => {
-    return(
+    return (
         <UserStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
@@ -151,9 +165,9 @@ const UserNavigator = () => {
                 component={UserProfileScreen}
                 options={userProfileScreenOptions}
             />
-            <UserStackNavigator.Screen 
+            <UserStackNavigator.Screen
                 name="UserStats"
-                component={UserStatsScreen} 
+                component={UserStatsScreen}
             />
             <UserStackNavigator.Screen
                 name="UserPosts"
@@ -172,34 +186,35 @@ const UserNavigator = () => {
 const BottomTabNavigator = createBottomTabNavigator();
 
 export const BottomNavigator = () => {
-    return(
+    return (
         <BottomTabNavigator.Navigator
             tabBarOptions={{
                 activeTintColor: Colors.primary
             }}
         >
-            <BottomTabNavigator.Screen 
+            <BottomTabNavigator.Screen
                 name="Home"
                 component={PostNavigator}
-                options={{
+                options={ ({route}) => ({
+                    tabBarVisible: getTabBarVisibility(route),
                     tabBarLabel: 'Home',
                     tabBarIcon: (props) => (
                         <Ionicons
-                            name={ Platform.OS === 'android' ? 'md-home' : 'ios-home' }
+                            name={Platform.OS === 'android' ? 'md-home' : 'ios-home'}
                             size={24}
                             color={props.color}
                         />
                     )
-                }}
+                })}
             />
-            <BottomTabNavigator.Screen 
+            <BottomTabNavigator.Screen
                 name="FindPeople"
                 component={FindPeopleNavigator}
                 options={{
                     tabBarLabel: 'Find People',
                     tabBarIcon: (props) => (
                         <Ionicons
-                            name={ Platform.OS === 'android' ? 'md-people' : 'ios-people' }
+                            name={Platform.OS === 'android' ? 'md-people' : 'ios-people'}
                             size={24}
                             color={props.color}
                         />
@@ -207,14 +222,14 @@ export const BottomNavigator = () => {
                 }}
             />
 
-            <BottomTabNavigator.Screen 
+            <BottomTabNavigator.Screen
                 name="AddPost"
                 component={CreatePostNavigator}
                 options={{
                     tabBarLabel: 'Add Post',
                     tabBarIcon: (props) => (
                         <Ionicons
-                            name={ Platform.OS === 'android' ? 'md-add-circle-outline' : 'ios-add-circle-outline' }
+                            name={Platform.OS === 'android' ? 'md-add-circle-outline' : 'ios-add-circle-outline'}
                             size={24}
                             color={props.color}
                         />
@@ -222,21 +237,21 @@ export const BottomNavigator = () => {
                 }}
             />
 
-            <BottomTabNavigator.Screen 
+            <BottomTabNavigator.Screen
                 name="YourProfile"
                 component={UserNavigator}
                 options={{
                     tabBarLabel: 'Profile',
                     tabBarIcon: (props) => (
                         <Ionicons
-                            name={ Platform.OS === 'android' ? 'md-person' : 'ios-person' }
+                            name={Platform.OS === 'android' ? 'md-person' : 'ios-person'}
                             size={24}
                             color={props.color}
                         />
                     )
                 }}
             />
-            
+
         </BottomTabNavigator.Navigator>
     );
 };
@@ -247,16 +262,16 @@ export const BottomNavigator = () => {
 const AuthStackNavigator = createStackNavigator();
 
 export const AuthNavigator = () => {
-    return(
+    return (
         <AuthStackNavigator.Navigator
             screenOptions={defaultNavOptions}
         >
-            <AuthStackNavigator.Screen 
+            <AuthStackNavigator.Screen
                 name="Auth"
                 component={AuthScreen}
                 options={{ headerShown: false }}
             />
-            <AuthStackNavigator.Screen 
+            <AuthStackNavigator.Screen
                 name="ForgotPassword"
                 component={ForgotPasswordScreen}
                 options={forgotPasswordScreenOptions}

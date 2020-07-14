@@ -3,10 +3,6 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
-    Image,
-    Alert,
-    ScrollView,
     FlatList,
     ActivityIndicator,
 } from 'react-native';
@@ -16,16 +12,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as usersActions from '../../store/actions/users';
 import Colors from '../../constants/Colors';
 
-import ENV from '../../env';
-import { Button } from 'native-base';
+import { Container, Header, Item, Input, Icon, Button } from 'native-base';
 
 const FindPeopleScreen = () => {
+
+    const findPeopleUsers = useSelector(state => state.users.findPeople);
 
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [error, setError] = useState();
+    const [searchText, setSearchText] = useState('');
+    const [data, setData] = useState([]);
 
-    const findPeopleUsers = useSelector(state => state.users.findPeople);
     const dispatch = useDispatch();
 
 
@@ -33,15 +31,13 @@ const FindPeopleScreen = () => {
         setError(null);
         setIsRefreshing(true);
         try {
-            await dispatch(usersActions.fetchFindPeopleUsers());
-
+            const result = await dispatch(usersActions.fetchFindPeopleUsers());
+            setData(result);
         } catch (err) {
             setError(err.message);
         }
         setIsRefreshing(false);
     }, [dispatch, setIsLoading, setError])
-
-
 
     
     useEffect(() => {
@@ -53,12 +49,39 @@ const FindPeopleScreen = () => {
     }, [dispatch, loadFindPeople])
 
 
+    const handleSearchTextChange = (text) => {
+        setSearchText(text);
+        if(text !== ''){
+            let filteredData = []
+            let currData = findPeopleUsers;
+
+            filteredData = currData.filter(item => {
+                const lc = item.name.toLowerCase();
+                return lc.includes(text);
+            });
+            setData(filteredData);
+        } else {
+            setData(findPeopleUsers);
+        }
+    }
+
+
+    const followHandlerForData = (id) => {
+        //follow handler to remove item from search data i.e. data state
+        let searchData = data;
+        searchData = searchData.filter(i => i._id !== id);
+        setData(searchData);
+    }
+
+
 
     if(error){
         return (
             <View style={styles.centered} >
                 <Text>An error occured.</Text>
-                <Button title="Try again" onPress={loadFindPeople} color={Colors.primary} />
+                <Button onPress={loadFindPeople} color={Colors.primary} >
+                    <Text>Try again</Text>
+                </Button>
             </View>
         );
     }
@@ -72,53 +95,59 @@ const FindPeopleScreen = () => {
         );
     }
 
-
-    if(!isLoading && findPeopleUsers.length === 0){
-        return(
-            <View style={styles.centered} >
-                <Text>No users found. You are following all the users.</Text>
-                <Button onPress={loadFindPeople} >
-                    <Text>Refresh</Text>
-                </Button>
-            </View>
-        );
-    }
-
-
-
     return (
-        <View style={styles.container}>
+        <Container style={{ backgroundColor: '#fff' }} >
+            <Header style={{ backgroundColor: Colors.brightBlue }} searchBar rounded>
+                <Item>
+                    <Icon name="ios-search" />
+                    <Input
+                        value={searchText}
+                        onChangeText={(text) => handleSearchTextChange(text)}
+                        placeholder="Search" 
+                    />
+                    <Icon name="ios-people" />
+                </Item>
+            </Header>
+            { data.length === 0 && (
+                <View style={styles.centered}>
+                    <Text style={{ fontSize: 18, margin: 10 }} >No users found.</Text>
+                    <Text>Either you are already following the user</Text>
+                    <Text>or no user exists with that name.</Text>
+                </View>
+            ) }
             <FlatList
                 style={styles.list}
                 refreshing={isRefreshing}
                 onRefresh={loadFindPeople}
                 contentContainerStyle={styles.listContainer}
-                data={findPeopleUsers}
+                data={data}
                 horizontal={false}
                 numColumns={2}
                 keyExtractor={(item) => {
                     return item._id;
                 }}
                 renderItem={({ item }) => (
-                    <UserList item={item} />
+                    <UserList item={item} followHandler={followHandlerForData} />
                 )} 
             />
-        </View>
+        </Container>
     );
-}
+};
 
 const styles = StyleSheet.create({
     centered: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        margin: 30
     },
     container: {
         flex: 1,
     },
     list: {
         paddingHorizontal: 5,
-        backgroundColor: "#E6E6E6",
+        // backgroundColor: "#E6E6E6",
+        backgroundColor: '#fff'
     },
     listContainer: {
         alignItems: 'center'

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform, Alert } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform, Alert, TouchableNativeFeedback } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -59,6 +59,11 @@ const Card = (props) => {
 
     return (
         <View style={styles.screen} >
+            <TouchableNativeFeedback 
+                background={TouchableNativeFeedback.Ripple('#b3b3b3')}
+                // onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })}
+                onPressOut={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })}
+            >
             <View style={styles.card}>
                 <View style={styles.cardTitleHeader}>
                     <View style={{ display: 'flex', flex: 1, flexDirection: 'row' }} >
@@ -69,7 +74,7 @@ const Card = (props) => {
                                 onError={onImageErrorHandler}
                             />
                             <Text 
-                                style={{ marginLeft: 5, marginTop: 3 }} 
+                                style={{ fontSize: 15, alignSelf: 'center', paddingHorizontal: 10, paddingVertical: 5 }} 
                                 onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })} 
                             > 
                                 {post.postedBy.name} 
@@ -210,6 +215,8 @@ const Card = (props) => {
 
                 
             </View>
+        
+            </TouchableNativeFeedback>
         </View>
     );
 };
@@ -228,7 +235,7 @@ const styles = StyleSheet.create({
     },
     card: {
         width: '100%',
-        elevation: 6,
+        elevation: 3,
         shadowColor: 'black',
 
         shadowOffset: {

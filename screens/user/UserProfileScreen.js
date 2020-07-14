@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect, useRef} from "react";
+import React, {useCallback, useState} from "react";
 import {
     View,
     Text,
@@ -9,7 +9,6 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     TouchableNativeFeedback,
-    TouchableHighlight
     
 } from "react-native";
 
@@ -20,12 +19,11 @@ import Colors from '../../constants/Colors';
 
 import * as usersActions from '../../store/actions/users';
 import * as postsActions from '../../store/actions/posts';
-import * as authActions from '../../store/actions/auth';
 
 import { useDispatch, useSelector } from "react-redux";
 import ENV from '../../env';
 import MenuItem from "../../components/UI/MenuItem";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 
 const UserProfileScreen = (props) => {
@@ -199,36 +197,51 @@ const UserProfileScreen = (props) => {
                                     flexDirection: 'row',
                                     justifyContent: 'space-around',
                                     alignItems: 'flex-end'
-                                }}>
+                                }}
+                            >
                                 <View style={{ alignItems: 'center' }}>
-                                    <TouchableOpacity
-                                        onPress={() => props.navigation.navigate('UserPosts', { userId: userId, postIndex: 0 })}
+                                    <TouchableNativeFeedback
+                                        background={TouchableNativeFeedback.Ripple('#c2c2c2', true)}
+                                        onPress={() => props.navigation.navigate(
+                                            'UserPosts', 
+                                            { userId: userId, postIndex: 0 }
+                                        )}
                                     >
-                                        <Text> {currUserPosts.length} </Text>
-                                    </TouchableOpacity>
-                                    <Text style={{ fontSize: 10, color: 'grey' }}>Posts</Text>
+                                        <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+                                            <Text style={{ fontSize: 18 }} >{currUserPosts.length}</Text>
+                                            <Text style={{ fontSize: 12, color: 'grey' }}>Posts</Text>
+                                        </View>
+                                    </TouchableNativeFeedback>
                                 </View>
+
                                 <View style={{ alignItems: 'center' }}>
-                                    <TouchableOpacity
+                                    <TouchableNativeFeedback
+                                        background={TouchableNativeFeedback.Ripple('#c2c2c2', true)}
                                         onPress={() => props.navigation.navigate(
                                             'UserStats',
                                             { activeTab: 0, currUser: currUser }
                                         )}
                                     >
-                                        <Text> { currUser.followers.length } </Text>
-                                    </TouchableOpacity>
-                                    <Text style={{ fontSize: 10, color: 'grey' }}>Followers</Text>
+                                        <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+                                            <Text style={{ fontSize: 18 }} >{currUser.followers.length}</Text>
+                                            <Text style={{ fontSize: 12, color: 'grey' }}>Followers</Text>
+                                        </View>
+                                    </TouchableNativeFeedback>
                                 </View>
+
                                 <View style={{ alignItems: 'center' }}>
-                                    <TouchableOpacity
+                                    <TouchableNativeFeedback
+                                        background={TouchableNativeFeedback.Ripple('#c2c2c2', true)}
                                         onPress={() => props.navigation.navigate(
                                             'UserStats',
                                             { activeTab: 1, currUser: currUser }
                                         )}
                                     >
-                                        <Text> { currUser.following.length } </Text>
-                                    </TouchableOpacity>
-                                    <Text style={{ fontSize: 10, color: 'grey' }}>Following</Text>
+                                        <View style={{ justifyContent: 'center', alignItems: 'center' }} >
+                                            <Text style={{ fontSize: 18 }} >{currUser.following.length}</Text>
+                                            <Text style={{ fontSize: 12, color: 'grey' }}>Following</Text>
+                                        </View>
+                                    </TouchableNativeFeedback>
                                 </View>
                             </View>
                             {/**

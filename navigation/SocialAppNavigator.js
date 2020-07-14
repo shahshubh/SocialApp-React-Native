@@ -7,17 +7,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import AllPostsScreen, { screenOptions as allPostsScreenOptions } from '../screens/post/AllPostsScreen';
-import EditPostScreen from '../screens/post/EditPostScreen';
-import CommentsScreen from '../screens/post/CommentsScreen';
-import AddPostScreen from '../screens/post/AddPostScreen';
-import ProfileScreen from '../screens/user/ProfileScreen';
+import EditPostScreen, { screenOptions as editPostScreenOptions } from '../screens/post/EditPostScreen';
+import CommentsScreen, { screenOptions as commentsScreenOptions } from '../screens/post/CommentsScreen';
+import AddPostScreen, { screenOptions as addPostScreenOptions } from '../screens/post/AddPostScreen';
 import UserProfileScreen, { screenOptions as userProfileScreenOptions } from '../screens/user/UserProfileScreen';
 import FindPeopleScreen from '../screens/user/FindPeopleScreen';
-import UserStatsScreen from '../screens/user/UserStatsScreen';
+import UserStatsScreen, { screenOptions as userStatsScreenOptions } from '../screens/user/UserStatsScreen';
 import UserPostsScreen, { screenOptions as userPostsScreenOptions } from '../screens/user/UserPostsScreen';
-import EditProfileScreen from '../screens/user/EditProfileScreen';
+import EditProfileScreen, { screenOptions as editProfileScreenOptions } from '../screens/user/EditProfileScreen';
 
-import ChatListScreen from '../screens/chat/ChatListScreen';
+import ChatListScreen, { screenOptions as chatListScreenOptions } from '../screens/chat/ChatListScreen';
 import ChatScreen, { screenOptions as chatScreenOptions } from '../screens/chat/ChatScreen';
 
 import AuthScreen from '../screens/auth/AuthScreen';
@@ -71,6 +70,7 @@ const PostNavigator = () => {
             <PostStackNavigator.Screen
                 name="UserStats"
                 component={UserStatsScreen}
+                options={userStatsScreenOptions}
             />
             <PostStackNavigator.Screen
                 name="UserPosts"
@@ -80,15 +80,18 @@ const PostNavigator = () => {
             <PostStackNavigator.Screen
                 name="Comments"
                 component={CommentsScreen}
+                options={commentsScreenOptions}
 
             />
             <PostStackNavigator.Screen
                 name="EditPost"
                 component={EditPostScreen}
+                options={editPostScreenOptions}
             />
             <PostStackNavigator.Screen
                 name="ChatList"
                 component={ChatListScreen}
+                options={chatListScreenOptions}
             />
             <PostStackNavigator.Screen
                 name="Chat"
@@ -111,6 +114,7 @@ const FindPeopleNavigator = () => {
             <FindPeopleStackNavigator.Screen
                 name="Find"
                 component={FindPeopleScreen}
+                options={{ headerShown: false }}
             />
             <FindPeopleStackNavigator.Screen
                 name="UserProfile"
@@ -120,6 +124,7 @@ const FindPeopleNavigator = () => {
             <FindPeopleStackNavigator.Screen
                 name="UserStats"
                 component={UserStatsScreen}
+                options={userStatsScreenOptions}
             />
             <FindPeopleStackNavigator.Screen
                 name="UserPosts"
@@ -129,6 +134,7 @@ const FindPeopleNavigator = () => {
             <FindPeopleStackNavigator.Screen
                 name="Comments"
                 component={CommentsScreen}
+                options={commentsScreenOptions}
             />
 
         </FindPeopleStackNavigator.Navigator>
@@ -146,6 +152,7 @@ const CreatePostNavigator = () => {
             <CreatePostStackNavigator.Screen
                 name="CreatePost"
                 component={AddPostScreen}
+                options={addPostScreenOptions}
             />
         </CreatePostStackNavigator.Navigator>
     );
@@ -168,6 +175,7 @@ const UserNavigator = () => {
             <UserStackNavigator.Screen
                 name="UserStats"
                 component={UserStatsScreen}
+                options={userStatsScreenOptions}
             />
             <UserStackNavigator.Screen
                 name="UserPosts"
@@ -177,6 +185,7 @@ const UserNavigator = () => {
             <UserStackNavigator.Screen
                 name="EditProfile"
                 component={EditProfileScreen}
+                options={editProfileScreenOptions}
             />
         </UserStackNavigator.Navigator>
     );
@@ -189,7 +198,7 @@ export const BottomNavigator = () => {
     return (
         <BottomTabNavigator.Navigator
             tabBarOptions={{
-                activeTintColor: Colors.primary
+                activeTintColor: Colors.brightBlue
             }}
         >
             <BottomTabNavigator.Screen

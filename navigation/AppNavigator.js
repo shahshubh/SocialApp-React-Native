@@ -1,11 +1,8 @@
 import React from 'react';
-
 import { BottomNavigator, AuthNavigator } from './SocialAppNavigator';
-
 import { useSelector } from 'react-redux';
-
 import { NavigationContainer } from '@react-navigation/native';
-import AuthScreen from '../screens/auth/AuthScreen';
+
 import StartupScreen from '../screens/StartupScreen';
 
 const AppNavigator = props => {

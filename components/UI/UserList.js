@@ -21,7 +21,7 @@ import ENV from '../../env';
 
 
 const UserList = (props) => {
-    const { item } = props;
+    const { item, followHandler } = props;
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${item._id}`)
 
 
@@ -34,6 +34,7 @@ const UserList = (props) => {
 
     const followUserHandler = async () => {
         await dispatch(usersActions.followFindPeople(item._id))
+        followHandler(item._id);
         showMessage({
             message: `Your are now following ${item.name}.`,
             type: "success",

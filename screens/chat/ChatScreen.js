@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { GiftedChat } from 'react-native-gifted-chat'
 
@@ -78,17 +78,19 @@ const ChatScreen = (props) => {
     }, [])
 
     return (
-        <GiftedChat
-            text={text}
-            onInputTextChanged={text => setText(text)}
-            messages={messages}
-            onSend={messages => onSend(messages)}
-            user={{
-                _id: loggedUser._id,
-            }}
-            // alwaysShowSend={true}
-            // inverted={false}
-        />
+        <View style={{ flex: 1, backgroundColor: '#fff' }} >
+            <GiftedChat
+                text={text}
+                onInputTextChanged={text => setText(text)}
+                messages={messages}
+                onSend={messages => onSend(messages)}
+                user={{
+                    _id: loggedUser._id,
+                }}
+                // alwaysShowSend={true}
+                // inverted={false}
+            />
+        </View>
     );
 };
 

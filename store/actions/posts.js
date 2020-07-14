@@ -12,7 +12,6 @@ export const ADD_COMMENT_TEMP = 'ADD_COMMENT_TEMP';
 
 export const fetchPosts = () => {
     return async (dispatch, getState) => {
-        const userId = getState().auth.user._id;
         const response = await fetch(`${ENV.apiUrl}/rn/allposts`);
 
         const resData = await response.json();

@@ -15,7 +15,7 @@ import { useDispatch } from 'react-redux';
 import * as postActions from '../../store/actions/posts';
 import ImgPicker from '../../components/app/ImgPicker';
 import Colors from '../../constants/Colors';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const AddPostScreen = (props) => {
 
@@ -148,6 +148,11 @@ const AddPostScreen = (props) => {
     );
 };
 
+
+export const screenOptions = {
+    headerTitle: 'Create Post'
+}
+
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
@@ -240,7 +245,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.50,
         shadowRadius: 12.35,
 
-        elevation: 19,
+        elevation: 10,
     },
     loginText: {
         color: 'white',

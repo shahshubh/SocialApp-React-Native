@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Image, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Button, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import ENV from '../../env';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import Colors from '../../constants/Colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';

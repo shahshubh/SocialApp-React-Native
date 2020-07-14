@@ -1,13 +1,12 @@
 import React, { useState, useCallback } from 'react';
-import {  StyleSheet, Text, View, ScrollView,FlatList, TextInput, KeyboardAvoidingView, Button, Alert, ActivityIndicator } from 'react-native';
+import {  StyleSheet, Text, View,FlatList, TextInput, KeyboardAvoidingView, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import Comment from '../../components/UI/Comment';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 
 import * as postsActions from '../../store/actions/posts';
 import Colors from '../../constants/Colors';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const CommentsScreen = (props) => {
 
@@ -146,6 +145,11 @@ const CommentsScreen = (props) => {
         </View>
     );
 };
+
+
+export const screenOptions = {
+    headerTitle: 'Comments'
+}
 
 const styles = StyleSheet.create({
     root: {

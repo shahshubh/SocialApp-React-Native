@@ -2,12 +2,17 @@
   "expo": {
     "name": "socialapp-rn",
     "slug": "socialapp-rn",
+    "platforms": [
+      "ios",
+      "android"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/buildericon.png",
     "splash": {
       "image": "./assets/splash3.png",
-      "resizeMode": "cover"
+      "resizeMode": "cover",
+      "backgroundColor": "#fff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -16,10 +21,22 @@
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "io.github.shahshubh.socialapp-rn",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
     },
-    "web": {
-      "favicon": "./assets/favicon.png"
+    "android": {
+      "package": "io.github.shahshubh.socialapp_rn",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/buildericon.png",
+        "backgroundColor": "#fff"
+      },
+      "permissions": [
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE",
+        "READ_EXTERNAL_STORAGE"
+      ]
     }
   }
 }

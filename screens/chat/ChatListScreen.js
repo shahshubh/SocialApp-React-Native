@@ -2,11 +2,10 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { View, StyleSheet, ActivityIndicator, FlatList, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
-
 import * as chatActions from '../../store/actions/chat';
 import Colors from '../../constants/Colors';
 import ChatListItem from '../../components/UI/ChatListItem';
-import { Container, Header, Item, Input, Icon, Button } from 'native-base';
+import { Container, Header, Item, Input, Icon } from 'native-base';
 
 
 const ChatListScreen = (props) => {
@@ -43,7 +42,7 @@ const ChatListScreen = (props) => {
         } catch (err) {
             console.log(err)
         }
-    }, [dispatch])
+    }, [dispatch, setIsLoading])
 
 
     useEffect(() => {
@@ -68,9 +67,6 @@ const ChatListScreen = (props) => {
         } else {
             setData(chatList);
         }
-
-        // console.log(data[0]);
-    
     }   
 
 
@@ -95,9 +91,6 @@ const ChatListScreen = (props) => {
                     />
                     <Icon name="ios-people" />
                 </Item>
-                <Button transparent>
-                    <Text>Search</Text>
-                </Button>
             </Header>
             { data.length === 0 && (
                 <View style={styles.centered}>
@@ -117,6 +110,11 @@ const ChatListScreen = (props) => {
         </Container>
     );
 };
+
+
+export const screenOptions = {
+    headerTitle: 'Chats'
+}
 
 const styles = StyleSheet.create({
     centered: {

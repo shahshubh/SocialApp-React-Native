@@ -1,5 +1,5 @@
-import React, { useEffect,useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, ActivityIndicator, KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 
 import * as usersActions from '../../store/actions/users';
@@ -7,7 +7,7 @@ import ImgPicker from '../../components/app/ImgPicker';
 import Colors from '../../constants/Colors';
 
 import ENV from '../../env';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const EditProfileScreen = (props) => {
 
@@ -221,6 +221,10 @@ const EditProfileScreen = (props) => {
         </ScrollView>
     );
 };
+
+export const screenOptions = {
+    headerTitle: 'Edit Profile'
+}
 
 const styles = StyleSheet.create({
     screen: {

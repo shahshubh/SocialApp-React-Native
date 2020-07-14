@@ -4,15 +4,12 @@ import {
     Text,
     View,
     TextInput,
-    Button,
     TouchableOpacity,
     Image,
-    Alert,
     ActivityIndicator,
-    KeyboardAvoidingView
 } from 'react-native';
 
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 import * as authActions from '../../store/actions/auth';
 import { useDispatch } from 'react-redux';
 import Colors from '../../constants/Colors';

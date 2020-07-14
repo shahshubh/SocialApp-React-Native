@@ -8,7 +8,6 @@ import Card from '../../components/UI/Card';
 import Colors from '../../constants/Colors';
 
 import * as postsActions from '../../store/actions/posts';
-import * as usersActions from '../../store/actions/users';
 
 
 const UserPostsScreen = (props) => {
@@ -130,6 +129,10 @@ const UserPostsScreen = (props) => {
         </View>
     );
 };
+
+export const screenOptions = {
+    headerTitle: 'Posts'
+}
 
 
 const styles = StyleSheet.create({

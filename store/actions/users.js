@@ -98,11 +98,13 @@ export const fetchFindPeopleUsers = () => {
         if(resData.error){
             throw new Error(resData.error);
         }
-
+    
         dispatch({
             type: SET_FIND_PEOPLE,
             users: resData
         })
+
+        return resData;
     }
 };
 

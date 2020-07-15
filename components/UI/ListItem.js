@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 
 import ENV from '../../env';
 import Colors from '../../constants/Colors';
@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
 import * as usersActions from '../../store/actions/users';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 
 const ListItem = (props) => {
@@ -83,31 +83,33 @@ const ListItem = (props) => {
                         { user.email }
                     </Text>
                 </View>
-                <View style={{ position: 'absolute', right: 0}} >
-                    { checkFollow(user._id) ? (
-                        <TouchableOpacity
-                            onPress={followUserHandler}
-                            style={{  backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 15 }}
-                        >
-                            { isLoading ? (
-                                <ActivityIndicator size="small" color="#fff" />
-                            ) : (
-                                <Text style={{ color: '#fff' }} >UnFollow</Text>
-                            ) }
-                        </TouchableOpacity>
-                    ) : (
-                        <TouchableOpacity
-                            onPress={followUserHandler}
-                            style={{  backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 15 }}
-                        >
-                            { isLoading ? (
-                                <ActivityIndicator size="small" color="#fff" />
-                            ) : (
-                                <Text style={{ color: '#fff' }} >Follow</Text>
-                            )}
-                        </TouchableOpacity>
-                    ) }
-                </View>
+                { user._id !== loggedInUser._id && (
+                    <View style={{ position: 'absolute', right: 0}} >
+                        { checkFollow(user._id) ? (
+                            <TouchableOpacity
+                                onPress={followUserHandler}
+                                style={{  backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 15 }}
+                            >
+                                { isLoading ? (
+                                    <ActivityIndicator size="small" color="#fff" />
+                                ) : (
+                                    <Text style={{ color: '#fff' }} >UnFollow</Text>
+                                ) }
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity
+                                onPress={followUserHandler}
+                                style={{  backgroundColor: Colors.brightBlue, padding: 10, borderRadius: 15 }}
+                            >
+                                { isLoading ? (
+                                    <ActivityIndicator size="small" color="#fff" />
+                                ) : (
+                                    <Text style={{ color: '#fff' }} >Follow</Text>
+                                )}
+                            </TouchableOpacity>
+                        ) }
+                    </View>
+                ) }
             </View>
         </View>
     );

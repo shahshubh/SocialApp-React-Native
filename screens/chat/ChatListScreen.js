@@ -7,7 +7,6 @@ import Colors from '../../constants/Colors';
 import ChatListItem from '../../components/UI/ChatListItem';
 import { Container, Header, Item, Input, Icon } from 'native-base';
 
-
 const ChatListScreen = (props) => {
 
     const loggedUser = useSelector(state => state.auth.user);
@@ -16,6 +15,7 @@ const ChatListScreen = (props) => {
 
     // remove logged user from the list
     allUsers = allUsers.filter(item => item._id !== loggedUser._id);
+
 
     const [isLoading, setIsLoading] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
@@ -61,6 +61,7 @@ const ChatListScreen = (props) => {
 
             filteredData = currData.filter(item => {
                 const lc = item.name.toLowerCase();
+                text = text.toLowerCase();
                 return lc.includes(text);
             });
             setData(filteredData);
@@ -77,7 +78,6 @@ const ChatListScreen = (props) => {
             </View>
         );
     }
-
 
     return (
         <Container>

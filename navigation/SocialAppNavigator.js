@@ -23,6 +23,7 @@ import AuthScreen from '../screens/auth/AuthScreen';
 import ForgotPasswordScreen, { screenOptions as forgotPasswordScreenOptions } from '../screens/auth/ForgotPasswordScreen';
 
 
+
 const defaultNavOptions = {
     headerStyle: {
         backgroundColor: Platform.OS === 'android' ? Colors.brightBlue : ''
@@ -33,7 +34,7 @@ const defaultNavOptions = {
     // headerBackTitleStyle: {
     //     fontFamily: 'open-sans'
     // },
-    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
+    headerTintColor: Platform.OS === 'android' ? 'white' : Colors.brightBlue
 };
 
 

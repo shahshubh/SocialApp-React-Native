@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useDispatch } from 'react-redux';
 import * as authActions from '../../store/actions/auth';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const MenuItem = () => {
 
@@ -25,7 +25,12 @@ const MenuItem = () => {
     return(
         <Menu renderer={SlideInMenu} >
             <MenuTrigger>
-                <MaterialCommunityIcons name="dots-vertical" size={24} color="#fff" />
+                <MaterialCommunityIcons 
+                    name="dots-vertical" 
+                    size={24} 
+                    color={Platform.OS === 'android' ? '#fff' : Colors.brightBlue}
+                    style={{  padding: 15, marginRight: 5 }}
+                />
             </MenuTrigger>
             <MenuOptions >
                 <View style={{ borderTopLeftRadius: 30, borderTopRightRadius: 30, backgroundColor: Colors.brightBlue, overflow: 'hidden' }} >

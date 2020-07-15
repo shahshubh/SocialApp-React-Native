@@ -146,8 +146,8 @@ export const screenOptions = (navData) => {
             <Ionicons
                 name={Platform.OS === 'android' ? 'md-chatboxes' : 'ios-chatboxes'}
                 size = {24}
-                color='#fff'
-                style={{  padding: 15 }}
+                color={Platform.OS === 'android' ? '#fff' : Colors.brightBlue}
+                style={{  padding: 15, marginRight: 5 }}
                 onPress={() => navData.navigation.navigate('ChatList')}
             />
         )

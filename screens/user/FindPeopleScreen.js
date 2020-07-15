@@ -14,7 +14,7 @@ import Colors from '../../constants/Colors';
 
 import { Container, Header, Item, Input, Icon, Button } from 'native-base';
 
-const FindPeopleScreen = () => {
+const FindPeopleScreen = (props) => {
 
     const findPeopleUsers = useSelector(state => state.users.findPeople);
 
@@ -49,6 +49,16 @@ const FindPeopleScreen = () => {
     }, [dispatch, loadFindPeople])
 
 
+    useEffect(() => {
+        const unsubscribe = props.navigation.addListener('focus', e => {
+            setSearchText('');
+        });
+        return () => {
+            unsubscribe();
+        };
+    }, [])
+
+
     const handleSearchTextChange = (text) => {
         setSearchText(text);
         if(text !== ''){
@@ -57,6 +67,7 @@ const FindPeopleScreen = () => {
 
             filteredData = currData.filter(item => {
                 const lc = item.name.toLowerCase();
+                text = text.toLowerCase();
                 return lc.includes(text);
             });
             setData(filteredData);

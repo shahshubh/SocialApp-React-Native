@@ -4,9 +4,7 @@ import {  StyleSheet,
     Text,
     View,
     TouchableOpacity,
-    Image,
-    ScrollView,
-    FlatList } from 'react-native';
+    Image } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import ENV from '../../env';

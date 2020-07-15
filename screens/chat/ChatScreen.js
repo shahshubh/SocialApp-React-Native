@@ -1,12 +1,12 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { StyleSheet, View, Platform, KeyboardAvoidingView } from 'react-native';
+import { View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { GiftedChat } from 'react-native-gifted-chat'
+import { GiftedChat } from 'react-native-gifted-chat';
 
 import * as chatActions from '../../store/actions/chat';
 
 import socketIO from 'socket.io-client';
-
+import ENV from '../../env';
 
 let socket;
 
@@ -14,7 +14,6 @@ const ChatScreen = (props) => {
     const dispatch = useDispatch();
     const { route } = props;
     const user = route.params.user;
-
     const userId = user._id;
     const loggedUser = useSelector(state => state.auth.user);
 
@@ -35,23 +34,45 @@ const ChatScreen = (props) => {
     const [text, setText] = useState('');
     const [messages, setMessages] = useState(resultChats);
 
+    const sendPushNotification = async (userName, text) => {
+        const message = {
+            to: user.notificationToken,
+            sound: 'default',
+            title: userName,
+            body: text,
+            data: { data: 'goes here' },
+            _displayInForeground: true,
+        };
+        const response = await fetch('https://exp.host/--/api/v2/push/send', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Accept-encoding': 'gzip, deflate',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        });
+
+        const res = await response.json();
+        // console.log(res);
+    };
+
 
     useEffect(() => {
-        console.log("COnneCT USE effect")
-        socket = socketIO.connect('http://192.168.0.106:8080')
+        socket = socketIO.connect(ENV.apiUrl)
         socket.on('connect', () => {
             console.log('connected chat screen')
             socket.emit('userInfo', loggedUser);
         })
-
     }, [])
 
-
-
     useEffect(() => {
-        console.log("USE EFFECT");
         socket.on('message', (newChat) => {
             console.log("New message");
+            // if(newChat.sender._id !== loggedUser._id){
+                //push notification
+            // }
+
             if( newChat.sender._id === loggedUser._id || newChat.sender._id === userId ){
                 let giftedNewChat = {
                     _id: newChat._id,
@@ -71,9 +92,11 @@ const ChatScreen = (props) => {
 
     const onSend = useCallback((messages = []) => {
         socket.emit('sendMessage', messages[0].text, loggedUser, user,  () => {
-            // console.log('sent ', messages);
+
+            console.log("NOTIFICATION PUSHING to", user.name)
+            sendPushNotification(loggedUser.name, messages[0].text);
             setText('');
-            // setMessages(previousMessages => GiftedChat.append(previousMessages, messages))            
+            // setMessages(previousMessages => GiftedChat.append(previousMessages, messages))
         })
     }, [])
 
@@ -102,13 +125,5 @@ export const screenOptions = (navData) => {
         headerTitle: routeParams.user.name
     }
 }
-
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})
 
 export default ChatScreen;

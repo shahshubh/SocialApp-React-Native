@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import ENV from '../../env';
-import Colors from '../../constants/Colors';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 
-import * as usersActions from '../../store/actions/users';
-import { showMessage, hideMessage } from "react-native-flash-message";
 
 
 const ChatListItem = (props) => {

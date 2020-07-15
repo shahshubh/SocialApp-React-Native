@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,12 +7,19 @@ import {
     TouchableOpacity,
     Image,
     ActivityIndicator,
+    Vibration,
+    Platform
 } from 'react-native';
 
 import { showMessage } from "react-native-flash-message";
 import * as authActions from '../../store/actions/auth';
 import { useDispatch } from 'react-redux';
 import Colors from '../../constants/Colors';
+
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
+import Constants from 'expo-constants';
+
 
 const AuthScreen = (props) => {
 
@@ -24,8 +31,58 @@ const AuthScreen = (props) => {
     const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
+    const [expoPushToken, setExpoPushToken] = useState('');
+    const [notification, setNotification] = useState({});
 
     const dispatch = useDispatch();
+
+    let _notificationSubscription;
+
+    const registerForPushNotificationsAsync = async () => {
+        if (Constants.isDevice) {
+            const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+            let finalStatus = existingStatus;
+            if (existingStatus !== 'granted') {
+                const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+                finalStatus = status;
+            }
+            if (finalStatus !== 'granted') {
+                alert('Failed to get push token for push notification!');
+                return;
+            }
+            token = await Notifications.getExpoPushTokenAsync();
+            // console.log(token);
+            setExpoPushToken(token);
+        } else {
+            alert('Must use physical device for Push Notifications');
+        }
+        if (Platform.OS === 'android') {
+            Notifications.createChannelAndroidAsync('default', {
+                name: 'default',
+                sound: true,
+                priority: 'max',
+                vibrate: [0, 250, 250, 250],
+            });
+        }
+    };
+
+    useEffect(() => {
+        registerForPushNotificationsAsync();
+        console.log(expoPushToken);
+        _notificationSubscription = Notifications.addListener(_handleNotification);
+    }, [])
+        
+
+    const _handleNotification = notification => {
+        Vibration.vibrate();
+        console.log( "AUth screen: ", notification);
+        setNotification(notification);
+    };
+
+
+
+
+
 
     const validateAuthForm = () => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -71,7 +128,7 @@ const AuthScreen = (props) => {
         if(validateAuthForm()){
             if(isSignup){
                 try {
-                    const msg = await dispatch(authActions.signup(name, email, password))
+                    const msg = await dispatch(authActions.signup(name, email, password, expoPushToken))
                     showMessage({
                         message: "Signup Success",
                         description: 'Please Login !',
@@ -89,7 +146,7 @@ const AuthScreen = (props) => {
                 setIsLoading(false);
             } else {
                 try {
-                    await dispatch(authActions.signin(email, password))
+                    await dispatch(authActions.signin(email, password, expoPushToken))
                     showMessage({
                         message: "Signed in success",
                         type: "success",

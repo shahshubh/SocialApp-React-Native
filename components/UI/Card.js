@@ -9,7 +9,7 @@ import Colors from '../../constants/Colors';
 import ENV from '../../env';
 import { useDispatch } from 'react-redux';
 import * as postActions from '../../store/actions/posts';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 const Card = (props) => {
     const { post, userId } = props;
@@ -24,6 +24,13 @@ const Card = (props) => {
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
     }
+
+
+    let TouchableComp = TouchableOpacity;
+    if(Platform.OS === 'android' && Platform.Version >= 21){
+        TouchableComp = TouchableNativeFeedback;
+    }
+
 
     const deleteHandler = (id) => {
         Alert.alert(
@@ -57,13 +64,12 @@ const Card = (props) => {
         props.toggleLikeHandler(post._id, checkLike());
     }
 
+
     return (
-        <View style={styles.screen} >
-            <TouchableNativeFeedback 
-                background={TouchableNativeFeedback.Ripple('#b3b3b3')}
-                // onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })}
-                onPressOut={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })}
-            >
+        <TouchableComp 
+            background={ Platform.OS === 'ios' ? undefined : TouchableNativeFeedback.Ripple('#b3b3b3') }
+            onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })}
+        >
             <View style={styles.card}>
                 <View style={styles.cardTitleHeader}>
                     <View style={{ display: 'flex', flex: 1, flexDirection: 'row' }} >
@@ -213,21 +219,13 @@ const Card = (props) => {
                     </View>
                 )}
 
-                
             </View>
-        
-            </TouchableNativeFeedback>
-        </View>
+    
+        </TouchableComp>
     );
 };
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-
-    },
     userIcon: {
         height: 30,
         width: 30,

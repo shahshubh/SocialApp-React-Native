@@ -24,7 +24,7 @@ export const authenticate = (user, token) => {
 };
 
 
-export const signup = (name, email, password) => {
+export const signup = (name, email, password, expoPushToken) => {
     return async dispatch => {
         const response = await fetch(`${ENV.apiUrl}/signup`, {
             method: 'POST',
@@ -35,6 +35,7 @@ export const signup = (name, email, password) => {
                 name,
                 email,
                 password,
+                notificationToken: expoPushToken
             })
         });
         const resData = await response.json();
@@ -50,7 +51,7 @@ export const signup = (name, email, password) => {
 
 
 
-export const signin = (email, password) => {
+export const signin = (email, password, expoPushToken) => {
     return async dispatch => {
         const response = await fetch(`${ENV.apiUrl}/signin`, {
             method: 'POST',
@@ -60,6 +61,7 @@ export const signin = (email, password) => {
             body: JSON.stringify({
                 email: email,
                 password: password,
+                notificationToken: expoPushToken
             })
         });
 

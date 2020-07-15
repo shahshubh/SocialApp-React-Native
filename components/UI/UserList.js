@@ -1,20 +1,16 @@
-import React, {useState,useEffect, useCallback} from 'react';
+import React, {useState } from 'react';
 import {
     StyleSheet,
     Text,
     View,
     TouchableOpacity,
     Image,
-    Alert,
-    ScrollView,
-    FlatList,
-    ActivityIndicator
 } from 'react-native';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as usersActions from '../../store/actions/users';
 import Colors from '../../constants/Colors';
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 import { useNavigation } from '@react-navigation/native';
 
 import ENV from '../../env';
@@ -25,23 +21,42 @@ const UserList = (props) => {
     const [imageUri, setImageUri] = useState(`${ENV.apiUrl}/user/photo/${item._id}`)
 
 
+    const loggedInUserId = useSelector(state => state.auth.user._id);
+    const allUsers = useSelector(state => state.users.allUsers);
+    const loggedInUser = allUsers.filter(u => u._id === loggedInUserId)[0];
+
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
     const onImageErrorHandler = () => {
-        setImageUri(ENV.defaultImageUri);
+        setImageUri(ENV.defaultImageUri);   
+    }
+
+    const checkFollow = (userId) => {
+        const isFollowed = loggedInUser.following.filter(f => f._id === userId).length !== 0;
+        return isFollowed;
     }
 
     const followUserHandler = async () => {
-        await dispatch(usersActions.followFindPeople(item._id))
-        followHandler(item._id);
-        showMessage({
-            message: `Your are now following ${item.name}.`,
-            type: "success",
-            duration: 3000,
-            icon: { icon: "success", position: 'left' }
-        });
-        await dispatch(usersActions.followUser(item))
+        if(checkFollow(item._id)){
+            followHandler(item._id);
+            showMessage({
+                message: `Your are already following ${item.name}.`,
+                type: "success",
+                duration: 3000,
+                icon: { icon: "success", position: 'left' }
+            });
+        } else {
+            await dispatch(usersActions.followFindPeople(item._id))
+            followHandler(item._id);
+            showMessage({
+                message: `Your are now following ${item.name}.`,
+                type: "success",
+                duration: 3000,
+                icon: { icon: "success", position: 'left' }
+            });
+            await dispatch(usersActions.followUser(item))
+        }
     }
 
     return (

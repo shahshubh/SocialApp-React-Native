@@ -9,6 +9,7 @@ import {
     ActivityIndicator,
     TouchableOpacity,
     TouchableNativeFeedback,
+    Platform,
     
 } from "react-native";
 
@@ -170,6 +171,13 @@ const UserProfileScreen = (props) => {
         );
     }
 
+
+    let TouchableComp = TouchableOpacity;
+    if(Platform.OS === 'android' && Platform.Version >= 21){
+        TouchableComp = TouchableNativeFeedback;
+    }
+
+
     return (
         <Container style={styles.container} >
             <Content 
@@ -200,8 +208,8 @@ const UserProfileScreen = (props) => {
                                 }}
                             >
                                 <View style={{ alignItems: 'center' }}>
-                                    <TouchableNativeFeedback
-                                        background={TouchableNativeFeedback.Ripple('#c2c2c2', true)}
+                                    <TouchableComp
+                                        background={ Platform.OS === 'ios' ? undefined : TouchableNativeFeedback.Ripple('#c2c2c2', true) }
                                         onPress={() => props.navigation.navigate(
                                             'UserPosts', 
                                             { userId: userId, postIndex: 0 }
@@ -211,12 +219,12 @@ const UserProfileScreen = (props) => {
                                             <Text style={{ fontSize: 18 }} >{currUserPosts.length}</Text>
                                             <Text style={{ fontSize: 12, color: 'grey' }}>Posts</Text>
                                         </View>
-                                    </TouchableNativeFeedback>
+                                    </TouchableComp>
                                 </View>
 
                                 <View style={{ alignItems: 'center' }}>
-                                    <TouchableNativeFeedback
-                                        background={TouchableNativeFeedback.Ripple('#c2c2c2', true)}
+                                    <TouchableComp
+                                        background={ Platform.OS === 'ios' ? undefined : TouchableNativeFeedback.Ripple('#c2c2c2', true) }
                                         onPress={() => props.navigation.navigate(
                                             'UserStats',
                                             { activeTab: 0, currUser: currUser }
@@ -226,12 +234,12 @@ const UserProfileScreen = (props) => {
                                             <Text style={{ fontSize: 18 }} >{currUser.followers.length}</Text>
                                             <Text style={{ fontSize: 12, color: 'grey' }}>Followers</Text>
                                         </View>
-                                    </TouchableNativeFeedback>
+                                    </TouchableComp>
                                 </View>
 
                                 <View style={{ alignItems: 'center' }}>
-                                    <TouchableNativeFeedback
-                                        background={TouchableNativeFeedback.Ripple('#c2c2c2', true)}
+                                    <TouchableComp
+                                        background={ Platform.OS === 'ios' ? undefined : TouchableNativeFeedback.Ripple('#c2c2c2', true) }
                                         onPress={() => props.navigation.navigate(
                                             'UserStats',
                                             { activeTab: 1, currUser: currUser }
@@ -241,7 +249,7 @@ const UserProfileScreen = (props) => {
                                             <Text style={{ fontSize: 18 }} >{currUser.following.length}</Text>
                                             <Text style={{ fontSize: 12, color: 'grey' }}>Following</Text>
                                         </View>
-                                    </TouchableNativeFeedback>
+                                    </TouchableComp>
                                 </View>
                             </View>
                             {/**

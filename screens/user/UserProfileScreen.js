@@ -129,7 +129,7 @@ const UserProfileScreen = (props) => {
             return (
                 <TouchableOpacity 
                     key={index}
-                    onPress={() => props.navigation.navigate('UserPosts', { userId: userId, postIndex: index })}
+                    onPress={() => props.navigation.navigate('UserPosts', { userId: userId, postIndex: index, fromUserProfile: true })}
                 >
                     <View  style={[{ width: (width) / 3 }, { height: (width) / 3 }, { marginBottom: 2 }, index % 3 !== 0 ? { paddingLeft: 2 } : { paddingLeft: 0 }]}>
                         <Image 
@@ -212,7 +212,7 @@ const UserProfileScreen = (props) => {
                                         background={ Platform.OS === 'ios' ? undefined : TouchableNativeFeedback.Ripple('#c2c2c2', true) }
                                         onPress={() => props.navigation.navigate(
                                             'UserPosts', 
-                                            { userId: userId, postIndex: 0 }
+                                            { userId: userId, postIndex: 0, fromUserProfile: true }
                                         )}
                                     >
                                         <View style={{ justifyContent: 'center', alignItems: 'center' }} >

@@ -12,7 +12,7 @@ import * as postActions from '../../store/actions/posts';
 import { showMessage } from "react-native-flash-message";
 
 const Card = (props) => {
-    const { post, userId } = props;
+    const { post, userId, fromUserProfile } = props;
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
@@ -68,7 +68,11 @@ const Card = (props) => {
     return (
         <TouchableComp 
             background={ Platform.OS === 'ios' ? undefined : TouchableNativeFeedback.Ripple('#b3b3b3') }
-            onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })}
+            onPress={() =>  
+                fromUserProfile ? 
+                {} 
+                : 
+                navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name }) }
         >
             <View style={styles.card}>
                 <View style={styles.cardTitleHeader}>

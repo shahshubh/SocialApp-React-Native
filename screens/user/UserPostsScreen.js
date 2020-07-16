@@ -20,6 +20,7 @@ const UserPostsScreen = (props) => {
     const { route } = props;
     const userId = route.params.userId;
     const postIndex = route.params.postIndex;
+    const fromUserProfile = route.params.fromUserProfile;
 
     const loggedInUserId = useSelector(state => state.auth.user._id);
     const allPosts = useSelector(state => state.posts.allPosts);
@@ -121,6 +122,7 @@ const UserPostsScreen = (props) => {
                             userId={loggedInUserId}
                             toggleLikeHandler={toggleLikeHandler} 
                             index={index}
+                            fromUserProfile={fromUserProfile}
                         />
                     );
                 }} 

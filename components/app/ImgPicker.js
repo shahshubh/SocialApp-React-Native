@@ -6,6 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { showMessage } from "react-native-flash-message";
 
 const ImgPicker = props => {
     
@@ -52,14 +53,14 @@ const ImgPicker = props => {
                     allowsEditing: true,
                     base64: true,
                     // aspect: [16, 9],
-                    quality: 0.6,
+                    quality: 0.4,
                 });
             } else {
                 image = await ImagePicker.launchCameraAsync({
                     allowsEditing: true,
                     base64: true,
                     // aspect: [16, 9],
-                    quality: 0.6,
+                    quality: 0.4,
                 });
             }
             if(!image.cancelled){
@@ -67,7 +68,9 @@ const ImgPicker = props => {
                 let res = image.uri.split('.');
                 let imageExtenstion = res[res.length - 1];
                 let imageType = `${image.type}/${imageExtenstion}`;
+                
                 props.onImageTaken(image.base64, imageType);
+
             }
         } catch (error) {
             console.log("Image Error -",error)

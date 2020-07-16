@@ -11,6 +11,7 @@ const ChatListScreen = (props) => {
 
     const loggedUser = useSelector(state => state.auth.user);
     const chatList = useSelector(state => state.chat.chatList);
+    const allChats = useSelector(state => state.chat.allChats);
     let allUsers = useSelector(state => state.users.allUsers);
 
     // remove logged user from the list
@@ -28,8 +29,9 @@ const ChatListScreen = (props) => {
     const loadChatList = useCallback(async () => {
         setIsRefreshing(true);
         try {
-            await dispatch(chatActions.fetchChatList());
+            const result = await dispatch(chatActions.fetchChatList());
             await dispatch(chatActions.fetchChats());
+            setData(result);
         } catch (err) {
             console.log(err)
         }
@@ -45,12 +47,23 @@ const ChatListScreen = (props) => {
     }, [dispatch, setIsLoading])
 
 
+    // useEffect(() => {
+    //     const unsubscribe = props.navigation.addListener('focus', e => {
+    //         setSearchText('');
+    //         loadChatList();
+    //     });
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, [])
+
     useEffect(() => {
         setIsLoading(true);
         loadChats()
-            .then(() => {
-                setIsLoading(false);
-            });
+        .then(() => {
+            setIsLoading(false);
+        });
+        setIsLoading(false)
     }, [dispatch, loadChats])
 
     const handleSearchTextChange = (text) => {
@@ -95,7 +108,9 @@ const ChatListScreen = (props) => {
             { data.length === 0 && (
                 <View style={styles.centered}>
                     <Text>No chats !</Text>
-                    <Text>Start by searching someone to chat with.</Text>
+                    <Text>Either your search does not match any user's name</Text>
+                    <Text>or you have no chats.</Text>
+                    <Text>Please refresh if you have new chats.</Text>
                 </View>
             ) }
             <FlatList

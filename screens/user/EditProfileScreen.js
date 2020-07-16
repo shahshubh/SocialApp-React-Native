@@ -27,7 +27,6 @@ const EditProfileScreen = (props) => {
     const [base64Data, setBase64Data] = useState('');
     const [imageType, setImageType] = useState('');
 
-    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
@@ -37,13 +36,26 @@ const EditProfileScreen = (props) => {
         setEmail('');
         setAbout('');
         setPassword('');
-        setError(null);
         setIsLoading(false);
     }
     
     const validatePost = () => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const passwordRegex = /\d/
+
+        let strLength = base64Data.length;
+        let sizeInBytes = 4 * Math.ceil((strLength / 3))*0.5624896334383812;
+        let sizeInKb = sizeInBytes/1000;
+        console.log(sizeInKb);
+        if(sizeInKb > 100){
+            showMessage({
+                message: "Image size should be less than 150KB.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' }
+            });
+            return false;
+        }
+
         if( !name){
             showMessage({
                 message: "Please enter a valid name.",
@@ -101,7 +113,6 @@ const EditProfileScreen = (props) => {
 
     const updatePost = async () => {
         setIsLoading(true);
-        setError(null);
         if(validatePost()){
             try {
                 await dispatch(usersActions.updateProfile(name, email, about, password, base64Data, imageType));
@@ -134,12 +145,12 @@ const EditProfileScreen = (props) => {
         <ScrollView>
             <KeyboardAvoidingView style={styles.screen} >
                 <View style={styles.container}>
-                    { error !== null && (
+                    {/* { error !== null && (
                         <View style={styles.errorMsgContainer} >
                             <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
                             <Text style={styles.msgText}> {error} </Text>
                         </View>
-                    )}
+                    )} */}
                     <View style={styles.labelContainer} >
                         <Text style={styles.labelText} >Profile Photo</Text>
                     </View>

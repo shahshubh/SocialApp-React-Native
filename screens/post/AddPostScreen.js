@@ -5,7 +5,6 @@ import {
     StyleSheet, 
     TextInput, 
     TouchableOpacity, 
-    Image, 
     ActivityIndicator, 
     KeyboardAvoidingView, 
     ScrollView 
@@ -25,7 +24,6 @@ const AddPostScreen = (props) => {
     const [base64Data, setBase64Data] = useState('');
     const [imageType, setImageType] = useState('');
 
-    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
@@ -37,7 +35,6 @@ const AddPostScreen = (props) => {
         setBody('');
         setBase64Data('');
         setImageType('');
-        setError(null);
         setIsLoading(false);
     }
 
@@ -50,24 +47,54 @@ const AddPostScreen = (props) => {
     }, [clearForm])
 
     const validatePost = () => {
+        let strLength = base64Data.length;
+        let sizeInBytes = 4 * Math.ceil((strLength / 3))*0.5624896334383812;
+        let sizeInKb = sizeInBytes/1000;
+        console.log(sizeInKb);
+        if(sizeInKb > 100){
+            showMessage({
+                message: "Image size should be less than 150KB.",
+                type: "danger",
+                duration: 3000,
+                icon: { icon: "danger", position: 'left' }
+            });
+            return false;
+        }
+
+
         if(!title || title.length === 0){
-            setError('Please enter a title.');
+            showMessage({
+                message: "Please enter a title.",
+                type: "danger",
+                duration: 3000,
+                icon: { icon: "danger", position: 'left' }
+            });
             return false;
         }
         if(!body || body.length === 0){
-            setError('Please enter a body');
+            showMessage({
+                message: "Please enter a body.",
+                type: "danger",
+                duration: 3000,
+                icon: { icon: "danger", position: 'left' }
+            });
             return false;
         }
         if(base64Data.length === 0 ){
-            setError('Please select an image to post.');
+            showMessage({
+                message: "Please select an image to post.",
+                type: "danger",
+                duration: 3000,
+                icon: { icon: "danger", position: 'left' }
+            });
             return false;
         }
+
         return true;
     }
 
     const createPost = async () => {
         setIsLoading(true);
-        setError(null);
         if(validatePost()){
             console.log("VALID POST")
             try {
@@ -81,7 +108,12 @@ const AddPostScreen = (props) => {
                     icon: { icon: "success", position: 'left' }
                 });
             } catch (error) {
-                setError(error.message);
+                showMessage({
+                    message: error.message,
+                    type: "danger",
+                    duration: 3000,
+                    icon: { icon: "danger", position: 'left' }
+                });
                 console.log("ERROR ",error.message);
             }
         } 
@@ -97,12 +129,12 @@ const AddPostScreen = (props) => {
         <ScrollView  >
             <KeyboardAvoidingView style={styles.screen} behavior="padding" >
                 <View style={styles.container}>
-                    { error !== null && (
+                    {/* { error !== null && (
                         <View style={styles.errorMsgContainer} >
                             <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
                             <Text style={styles.msgText}> {error} </Text>
                         </View>
-                    )}
+                    )} */}
                     <ImgPicker 
                         onImageTaken={imagePickedHandler}
                         clearPickedImage={clearPickedImage}

@@ -8,7 +8,8 @@ import {
     Image,
     ActivityIndicator,
     Vibration,
-    Platform
+    Platform,
+    Alert
 } from 'react-native';
 
 import { showMessage } from "react-native-flash-message";
@@ -28,14 +29,13 @@ const AuthScreen = (props) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState({});
 
     const dispatch = useDispatch();
-
+    let token;
     let _notificationSubscription;
 
     const registerForPushNotificationsAsync = async () => {
@@ -47,14 +47,32 @@ const AuthScreen = (props) => {
                 finalStatus = status;
             }
             if (finalStatus !== 'granted') {
-                alert('Failed to get push token for push notification!');
+                Alert.alert(
+                    'Failed !',
+                    'Failed to get push token for push notification!',
+                    [{ text: 'Okay' }]
+                );
                 return;
             }
-            token = await Notifications.getExpoPushTokenAsync();
-            // console.log(token);
+            try{
+                token = await Notifications.getExpoPushTokenAsync();
+            } catch(err){
+                showMessage({
+                    message: `ERROR - ${err.message}`,
+                    description: `${err}`,
+                    type: "danger",
+                    icon: { icon: "danger", position: 'left' },
+                    duration: 3000
+                });
+            }
+            console.log(token);
             setExpoPushToken(token);
         } else {
-            alert('Must use physical device for Push Notifications');
+            Alert.alert(
+                'Error !',
+                'Must use physical device for Push Notifications',
+                [{ text: 'Okay' }]
+            )
         }
         if (Platform.OS === 'android') {
             Notifications.createChannelAndroidAsync('default', {
@@ -75,7 +93,6 @@ const AuthScreen = (props) => {
 
     const _handleNotification = notification => {
         Vibration.vibrate();
-        console.log( "AUth screen: ", notification);
         setNotification(notification);
     };
 
@@ -88,33 +105,63 @@ const AuthScreen = (props) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         const passwordRegex = /\d/
         if(isSignup && !name){
-            setError('Please enter a valid name.');
+            showMessage({
+                message: "Please enter a valid name.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             setIsLoading(false);
             return false;
         }
         if(isSignup && name && name.length < 2){
-            setError('Please enter a valid name.');
+            showMessage({
+                message: "Please enter a valid name.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             setIsLoading(false);
             return false;
         }
         if(!emailRegex.test(email.toLowerCase())){
-            setError('Please enter a valid email.')
+            showMessage({
+                message: "Please enter a valid email.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             setIsLoading(false);
             return false;
         }
         if(!password || password.length === 0){
-            setError('Please enter your password.')
+            showMessage({
+                message: "Please enter your password.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             setIsLoading(false);
             return false;
         }
         if(isSignup && password.length < 6){
-            setError('Password should be atleast 6 characters long.')
+            showMessage({
+                message: "Password should be atleast 6 characters long.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             setIsLoading(false);
             return false;
 
         }
         if(isSignup && !passwordRegex.test(password)){
-            setError('Password should contain atleast 1 number.')     
+            showMessage({
+                message: "Password should contain atleast 1 number.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             setIsLoading(false);
             return false;
         }
@@ -123,7 +170,6 @@ const AuthScreen = (props) => {
 
 
     const AuthHandler = async () => {
-        setError(null);
         setIsLoading(true);
         if(validateAuthForm()){
             if(isSignup){
@@ -141,7 +187,12 @@ const AuthScreen = (props) => {
                     setEmail('');
                     setPassword('');
                 } catch (error) {
-                    setError(error.message);
+                    showMessage({
+                        message: error.message,
+                        type: "danger",
+                        icon: { icon: "danger", position: 'left' },
+                        duration: 3000
+                    });
                 }
                 setIsLoading(false);
             } else {
@@ -154,7 +205,12 @@ const AuthScreen = (props) => {
                         duration: 3000
                     });
                 } catch (error) {
-                    setError(error.message);
+                    showMessage({
+                        message: error.message,
+                        type: "danger",
+                        icon: { icon: "danger", position: 'left' },
+                        duration: 3000
+                    });
                     setIsLoading(false);
                 }
             }
@@ -169,7 +225,6 @@ const AuthScreen = (props) => {
         } else if(inputField === 3){
             setPassword(text)
         }
-        setError(null);
     }
 
 
@@ -180,12 +235,12 @@ const AuthScreen = (props) => {
                     <Text style={styles.title}>SocialApp</Text>
                 </View>
 
-                { error !== null && (
+                {/* { error !== null && (
                     <View style={styles.errorMsgContainer} >
                         <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
                         <Text style={styles.msgText}> {error} </Text>
                     </View>
-                )}
+                )} */}
 
                 { isSignup && (
                     <View style={styles.inputContainer}>

@@ -32,6 +32,7 @@
         "foregroundImage": "./assets/buildericon.png",
         "backgroundColor": "#fff"
       },
+      "googleServicesFile": "./google-services.json",
       "permissions": [
         "CAMERA",
         "WRITE_EXTERNAL_STORAGE",

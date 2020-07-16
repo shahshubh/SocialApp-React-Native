@@ -15,11 +15,13 @@ export const fetchChatList = () => {
         if(resData.error){
             throw new Error(resData.error);
         }
-
+        
         dispatch({
             type: SET_CHAT_LIST,
             chatList: resData
         })
+
+        return resData;
     }
 };
 

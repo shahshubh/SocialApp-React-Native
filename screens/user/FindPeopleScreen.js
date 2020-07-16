@@ -49,14 +49,15 @@ const FindPeopleScreen = (props) => {
     }, [dispatch, loadFindPeople])
 
 
-    useEffect(() => {
-        const unsubscribe = props.navigation.addListener('focus', e => {
-            setSearchText('');
-        });
-        return () => {
-            unsubscribe();
-        };
-    }, [])
+    // useEffect(() => {
+    //     const unsubscribe = props.navigation.addListener('focus', e => {
+    //         setSearchText('');
+    //         setData(findPeopleUsers);
+    //     });
+    //     return () => {
+    //         unsubscribe();
+    //     };
+    // }, [])
 
 
     const handleSearchTextChange = (text) => {

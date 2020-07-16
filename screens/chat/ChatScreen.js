@@ -38,7 +38,7 @@ const ChatScreen = (props) => {
         const message = {
             to: user.notificationToken,
             sound: 'default',
-            title: userName,
+            title: `New message from ${userName}`,
             body: text,
             data: { data: 'goes here' },
             _displayInForeground: true,

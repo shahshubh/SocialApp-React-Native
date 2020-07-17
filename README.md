@@ -1,4 +1,5 @@
  <div align="center">
+<img src="assets/buildericon.png" style="border-radius:50%" alt="NewsX" width="70">
 
 # SocialApp-React-Native
 

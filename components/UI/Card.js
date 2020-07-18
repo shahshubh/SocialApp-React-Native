@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform, Alert, TouchableNativeFeedback } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform, Alert, TouchableNativeFeedback, Dimensions } from 'react-native';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -21,6 +21,9 @@ const Card = (props) => {
     const [isImageLoading, setIsImageLoading] = useState(true);
     const [imageUri, setImageUri] = useState('')
     const [showFullBody, setShowFullBody] = useState(false);
+    const [imgWidth, setImgWidth] = useState();
+    const [imgHeight, setImgHeight] = useState();
+
     const onImageErrorHandler = () => {
         setImageUri(ENV.defaultImageUri)
     }
@@ -64,6 +67,18 @@ const Card = (props) => {
         props.toggleLikeHandler(post._id, checkLike());
     }
 
+    useEffect(() => {
+        let imageUrl = `${ENV.apiUrl}/post/photo/${post._id}?${new Date(post.updated)}`;
+        Image.getSize(imageUrl, (width, height) => {
+            // calculate image width and height 
+            const screenWidth = Dimensions.get('window').width
+            const scaleFactor = width / screenWidth
+            const imageHeight = height / scaleFactor
+            setImgWidth(screenWidth);
+            setImgHeight(imageHeight);
+        })
+    }, [])
+
 
     return (
         <TouchableComp 
@@ -102,7 +117,7 @@ const Card = (props) => {
                 </View>
                 <View style={styles.cardImageContainer} >
                     <Image 
-                        style={styles.cardImage}
+                        style={{...styles.cardImage, height: imgHeight }}
                         source={{ uri: `${ENV.apiUrl}/post/photo/${post._id}?${new Date(post.updated)}` }}
                         onLoad={() => setIsImageLoading(false)}
                     />
@@ -277,11 +292,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#c2c2c2', 
         flex: 1, 
         display: 'flex',
-        height: 275 
+        // height: 275 
     },
     cardImage: {
         flex: 1,
-        height: 275,
+        // height: 275,
         width: null
     },
     /******** card components **************/

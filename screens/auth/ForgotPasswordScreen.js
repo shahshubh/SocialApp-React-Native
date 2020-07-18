@@ -19,7 +19,6 @@ const ForgotPasswordScreen = () => {
 
     const [email, setEmail] = useState('');
 
-    const [error, setError] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
@@ -27,7 +26,12 @@ const ForgotPasswordScreen = () => {
     const validateAuthForm = () => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if(!emailRegex.test(email.toLowerCase())){
-            setError('Please enter a valid email.')
+            showMessage({
+                message: "Please enter a valid email.",
+                type: "danger",
+                icon: { icon: "danger", position: 'left' },
+                duration: 3000
+            });
             return false;
         }
         
@@ -36,7 +40,6 @@ const ForgotPasswordScreen = () => {
 
 
     const AuthHandler = async () => {
-        setError(null);
         setIsLoading(true);
         if(validateAuthForm()){
             try {
@@ -49,7 +52,12 @@ const ForgotPasswordScreen = () => {
                 });
                 setEmail('');
             } catch (error) {
-                setError(error.message);
+                showMessage({
+                    message: error.message,
+                    type: "danger",
+                    icon: { icon: "danger", position: 'left' },
+                    duration: 3000
+                });
             }
         }
         setIsLoading(false);
@@ -59,12 +67,12 @@ const ForgotPasswordScreen = () => {
     return (
             <View style={styles.container}>
                 <Image style={styles.bgImage} source={require('../../assets/bg-auth.png')} />
-                { error !== null && (
+                {/* { error !== null && (
                     <View style={styles.errorMsgContainer} >
                         <Image style={styles.msgIcon} source={{ uri: "https://i.imgur.com/GnyDvKN.png" }} />
                         <Text style={styles.msgText}> {error} </Text>
                     </View>
-                )}
+                )} */}
                 <View style={styles.inputContainer}>
                     <TextInput style={styles.inputs}
                         placeholder="Email"

@@ -5,10 +5,12 @@ import {  StyleSheet,
     View,
     TouchableOpacity,
     Image } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 
 import ENV from '../../env';
 import { timeDifference } from '../../helpers/timeDifference';
+import VerifiedUser from '../../constants/VerifiedUser';
+import Colors from '../../constants/Colors';
 
 
 const Comment = (props) => {
@@ -36,7 +38,12 @@ const Comment = (props) => {
             </TouchableOpacity>
             <View style={styles.content}>
                 <View style={styles.contentHeader}>
-                    <Text style={styles.name}>{comment.postedBy.name}</Text>
+                    <Text style={styles.name}>
+                        {comment.postedBy.name + " "}
+                        {
+                            VerifiedUser.verifiedUsersEmail.includes(comment.postedBy._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                        }
+                    </Text>
                     <Text style={styles.time}>
                         {timeDifference(new Date(), new Date(comment.created))}
                     </Text>

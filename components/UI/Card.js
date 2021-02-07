@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, ActivityIndicator, Platform, Alert, TouchableNativeFeedback, Dimensions } from 'react-native';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Ionicons, MaterialCommunityIcons, Octicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { timeDifference } from '../../helpers/timeDifference';
@@ -10,6 +10,7 @@ import ENV from '../../env';
 import { useDispatch } from 'react-redux';
 import * as postActions from '../../store/actions/posts';
 import { showMessage } from "react-native-flash-message";
+import VerifiedUser from '../../constants/VerifiedUser';
 
 const Card = (props) => {
     const { post, userId, fromUserProfile } = props;
@@ -102,7 +103,10 @@ const Card = (props) => {
                                 style={{ fontSize: 15, alignSelf: 'center', paddingHorizontal: 10, paddingVertical: 5 }} 
                                 onPress={() => navigation.navigate('UserProfile', { userId: post.postedBy._id, name: post.postedBy.name })} 
                             > 
-                                {post.postedBy.name} 
+                                {post.postedBy.name + " "}
+                                {
+                                    VerifiedUser.verifiedUsersEmail.includes(post.postedBy._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                                }
                             </Text>
                         </View>
                         <View style={{ position: 'absolute', right: 0, display: 'flex', flexDirection: 'row'}}>

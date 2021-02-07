@@ -1,4 +1,4 @@
-import React, {useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import {
     StyleSheet,
     Text,
@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     Image,
 } from 'react-native';
+import { Octicons } from '@expo/vector-icons';
 
 import { useDispatch, useSelector } from 'react-redux';
 import * as usersActions from '../../store/actions/users';
@@ -14,6 +15,7 @@ import { showMessage } from "react-native-flash-message";
 import { useNavigation } from '@react-navigation/native';
 
 import ENV from '../../env';
+import VerifiedUser from '../../constants/VerifiedUser';
 
 
 const UserList = (props) => {
@@ -73,13 +75,16 @@ const UserList = (props) => {
                 <View style={{ alignItems: "center", justifyContent: "center" }}>
                     <Text
                         onPress={() => navigation.navigate('UserProfile',{ userId: item._id, name: item.name} )}
-                        style={styles.name}
+                        style={{...styles.name, marginRight: 10}}
                     >
                         {item.name.length > 10 ? (
-                            <>{item.name.substring(0,10)}...</>
+                            <>{item.name.substring(0,10)}... </>
                         ) : (
-                            <>{item.name}</>
+                            <>{item.name + " "}</>
                         )}
+                        {
+                            VerifiedUser.verifiedUsersEmail.includes(item._id) && <Octicons name="verified" size={20} color={Colors.brightBlue} />
+                        }
                     </Text>
                     <Text style={styles.position}>
                         {item.email.length > 15 ? (

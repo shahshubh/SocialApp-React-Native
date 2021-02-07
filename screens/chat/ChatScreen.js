@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { GiftedChat } from 'react-native-gifted-chat';
 
@@ -7,6 +7,10 @@ import * as chatActions from '../../store/actions/chat';
 
 import socketIO from 'socket.io-client';
 import ENV from '../../env';
+import { Octicons } from '@expo/vector-icons'
+import Colors from '../../constants/Colors';
+import VerifiedUser from '../../constants/VerifiedUser';
+
 
 let socket;
 
@@ -122,7 +126,17 @@ export const screenOptions = (navData) => {
 
     const routeParams = navData.route.params;
     return {
-        headerTitle: routeParams.user.name
+        
+        headerTitle: () => (
+            <Text
+                style={{ color: "#fff", fontSize: 20, fontWeight: "600" }}
+            >
+                {routeParams.user.name + " "}
+                {
+                    VerifiedUser.verifiedUsersEmail.includes(routeParams.user._id) && <Octicons name="verified" size={18} color="#fff" />
+                }
+            </Text>
+        )
     }
 }
 

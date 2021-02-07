@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect, useRef} from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, Button, Platform } from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator, Button, Platform, AsyncStorage } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons'
@@ -111,7 +111,6 @@ const AllPostsScreen = (props) => {
         );
     }
 
-
     return (
         <View style={styles.screen} >
             <FlatList
@@ -127,6 +126,7 @@ const AllPostsScreen = (props) => {
                     )
                 }}
                 renderItem={(post) => {
+                    console.log("posts - ",post.index);
                     return (
                         <Card post={post.item} userId={loggedUser._id} toggleLikeHandler={toggleLikeHandler} />
                     )

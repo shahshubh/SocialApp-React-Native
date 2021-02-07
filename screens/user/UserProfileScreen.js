@@ -15,6 +15,8 @@ import {
 
 import { Container, Content, Button } from 'native-base'
 var { height, width } = Dimensions.get('window');
+import { Octicons } from '@expo/vector-icons';
+
 
 import Colors from '../../constants/Colors';
 
@@ -25,6 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ENV from '../../env';
 import MenuItem from "../../components/UI/MenuItem";
 import { showMessage } from "react-native-flash-message";
+import VerifiedUser from "../../constants/VerifiedUser";
 
 
 const UserProfileScreen = (props) => {
@@ -306,7 +309,13 @@ const UserProfileScreen = (props) => {
 
                     <View style={{ paddingBottom: 10, paddingTop: 10 }}>
                         <View style={{ paddingHorizontal: 10 }} >
-                            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{currUser.name} </Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
+                                {currUser.name + " "} 
+                                {
+                                    VerifiedUser.verifiedUsersEmail.includes(currUser._id) && <Octicons name="verified" size={20} color={Colors.brightBlue} />
+                                }
+                            </Text>
+                            
                             { currUser.about && (
                                 <Text>{currUser.about} </Text>
                             ) }

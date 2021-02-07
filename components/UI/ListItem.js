@@ -8,6 +8,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as usersActions from '../../store/actions/users';
 import { showMessage } from "react-native-flash-message";
+import VerifiedUser from '../../constants/VerifiedUser';
+import { Octicons } from '@expo/vector-icons';
+
 
 
 const ListItem = (props) => {
@@ -76,7 +79,10 @@ const ListItem = (props) => {
                             onPress={() => navigation.navigate('Home', { screen: 'UserProfile', params: { userId: user._id, name: user.name }})}
                             style={styles.name}
                         >
-                            { user.name }
+                            { user.name + " " }
+                            {
+                                VerifiedUser.verifiedUsersEmail.includes(user._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                            }
                         </Text>
                     </View>
                     <Text style={styles.timeAgo}>

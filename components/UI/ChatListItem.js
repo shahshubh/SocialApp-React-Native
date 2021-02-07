@@ -4,6 +4,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import ENV from '../../env';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
+import VerifiedUser from '../../constants/VerifiedUser';
+import { Octicons } from '@expo/vector-icons';
+import Colors from '../../constants/Colors';
+
 
 
 
@@ -49,7 +53,10 @@ const ChatListItem = (props) => {
                             <Text
                                 style={styles.name}
                             >
-                                {user.name}
+                                {user.name + " "}
+                                {
+                                    VerifiedUser.verifiedUsersEmail.includes(user._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                                }
                             </Text>
                         </View>
                         <Text style={styles.timeAgo}>

@@ -55,7 +55,7 @@ const ChatListItem = (props) => {
                             >
                                 {user.name + " "}
                                 {
-                                    VerifiedUser.verifiedUsersEmail.includes(user._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                                    VerifiedUser.verifiedUsersId.includes(user._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
                                 }
                             </Text>
                         </View>

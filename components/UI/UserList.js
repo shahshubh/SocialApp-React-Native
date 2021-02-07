@@ -83,7 +83,7 @@ const UserList = (props) => {
                             <>{item.name + " "}</>
                         )}
                         {
-                            VerifiedUser.verifiedUsersEmail.includes(item._id) && <Octicons name="verified" size={20} color={Colors.brightBlue} />
+                            VerifiedUser.verifiedUsersId.includes(item._id) && <Octicons name="verified" size={20} color={Colors.brightBlue} />
                         }
                     </Text>
                     <Text style={styles.position}>

@@ -312,7 +312,7 @@ const UserProfileScreen = (props) => {
                             <Text style={{ fontWeight: 'bold', fontSize: 18 }}>
                                 {currUser.name + " "} 
                                 {
-                                    VerifiedUser.verifiedUsersEmail.includes(currUser._id) && <Octicons name="verified" size={20} color={Colors.brightBlue} />
+                                    VerifiedUser.verifiedUsersId.includes(currUser._id) && <Octicons name="verified" size={20} color={Colors.brightBlue} />
                                 }
                             </Text>
                             

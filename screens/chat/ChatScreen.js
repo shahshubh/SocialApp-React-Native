@@ -133,7 +133,7 @@ export const screenOptions = (navData) => {
             >
                 {routeParams.user.name + " "}
                 {
-                    VerifiedUser.verifiedUsersEmail.includes(routeParams.user._id) && <Octicons name="verified" size={18} color="#fff" />
+                    VerifiedUser.verifiedUsersId.includes(routeParams.user._id) && <Octicons name="verified" size={18} color="#fff" />
                 }
             </Text>
         )

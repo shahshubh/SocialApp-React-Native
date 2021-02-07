@@ -105,7 +105,7 @@ const Card = (props) => {
                             > 
                                 {post.postedBy.name + " "}
                                 {
-                                    VerifiedUser.verifiedUsersEmail.includes(post.postedBy._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                                    VerifiedUser.verifiedUsersId.includes(post.postedBy._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
                                 }
                             </Text>
                         </View>

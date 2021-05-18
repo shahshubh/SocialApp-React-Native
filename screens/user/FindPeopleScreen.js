@@ -120,9 +120,10 @@ const FindPeopleScreen = (props) => {
                     <Input
                         value={searchText}
                         onChangeText={(text) => handleSearchTextChange(text)}
-                        placeholder="Search name or email..." 
+                        placeholder={`Search by name or email...`}
                     />
-                    <Icon name="ios-people" />
+                    <Text>{data.length}</Text>
+                    <Icon name="ios-people"  />
                 </Item>
             </Header>
             { data.length === 0 && (

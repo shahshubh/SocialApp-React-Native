@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     },
     followButtonText: {
         color: "#FFFFFF",
-        fontSize: 20,
+        fontSize: 18,
     },
     icon: {
         height: 20,

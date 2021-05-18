@@ -134,8 +134,8 @@ const Card = (props) => {
                 </View>
                 <View style={styles.cardHeader}>
                     <View>
-                        <Text style={styles.title}>{post.title}</Text>
-                        { post.body.length > 30 ? (
+                        <Text style={styles.title}>{post.title ? post.title : ""}</Text>
+                        { post.body && post.body.length > 30 ? (
                             <View>
                                 { showFullBody ? (
                                     <Text style={styles.description}> 

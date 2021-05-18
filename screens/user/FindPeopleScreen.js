@@ -13,6 +13,7 @@ import * as usersActions from '../../store/actions/users';
 import Colors from '../../constants/Colors';
 
 import { Container, Header, Item, Input, Icon, Button } from 'native-base';
+import VerifiedUser from '../../constants/VerifiedUser';
 
 const FindPeopleScreen = (props) => {
 
@@ -32,7 +33,10 @@ const FindPeopleScreen = (props) => {
         setIsRefreshing(true);
         try {
             const result = await dispatch(usersActions.fetchFindPeopleUsers());
-            setData(result);
+            let verifiedUsers =  result.filter(e => VerifiedUser.verifiedUsersId.includes(e._id));
+            let otherUsers = result.filter(e => !VerifiedUser.verifiedUsersId.includes(e._id));
+            let updatedResult = [...verifiedUsers, ...otherUsers];
+            setData(updatedResult);
         } catch (err) {
             setError(err.message);
         }
@@ -68,8 +72,9 @@ const FindPeopleScreen = (props) => {
 
             filteredData = currData.filter(item => {
                 const lc = item.name.toLowerCase();
+                const lcEmail = item.email.toLowerCase();
                 text = text.toLowerCase();
-                return lc.includes(text);
+                return lc.includes(text) || lcEmail.includes(text);
             });
             setData(filteredData);
         } else {
@@ -115,7 +120,7 @@ const FindPeopleScreen = (props) => {
                     <Input
                         value={searchText}
                         onChangeText={(text) => handleSearchTextChange(text)}
-                        placeholder="Search" 
+                        placeholder="Search name or email..." 
                     />
                     <Icon name="ios-people" />
                 </Item>

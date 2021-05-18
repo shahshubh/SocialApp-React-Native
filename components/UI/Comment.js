@@ -41,7 +41,7 @@ const Comment = (props) => {
                     <Text style={styles.name}>
                         {comment.postedBy.name + " "}
                         {
-                            VerifiedUser.verifiedUsersId.includes(comment.postedBy._id) && <Octicons name="verified" size={18} color={Colors.brightBlue} />
+                            VerifiedUser.verifiedUsersId.includes(comment.postedBy._id) && <Octicons name="verified" size={16} color={Colors.brightBlue} />
                         }
                     </Text>
                     <Text style={styles.time}>

@@ -49,7 +49,7 @@ export default (state=initialState, action) => {
             let updatedFindPeople = [...state.findPeople];
             updatedFindPeople = updatedFindPeople.filter(i => i._id !== action.userId )
 
-            console.log(updatedFindPeople);
+            // console.log(updatedFindPeople);
             return{
                 ...state,
                 findPeople: updatedFindPeople
@@ -60,7 +60,7 @@ export default (state=initialState, action) => {
             const updatedAllUsers = [...state.allUsers]
             delete action.user.photo;
             updatedAllUsers[index] = action.user;
-            console.log(updatedAllUsers[index]);
+            // console.log(updatedAllUsers[index]);
             return{
                 ...state,
                 allUsers: updatedAllUsers

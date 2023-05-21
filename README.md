@@ -32,22 +32,22 @@ Social Networking mobile app similar to Instagram in React Native.
 
 <div align="center">
 
-<h4 align="center">Signup Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Home Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Profile Screen</h4>
+<h4 align="center">Signup Screen  |  Home Screen  |  Profile Screen</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/1.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/2.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/3.jpg"/>
 
-<h4 align="center">User Posts Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp User Stats Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Find People Screen</h4>
+<h4 align="center">User Posts Screen  |  User Stats Screen  |  Find People Screen</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/4.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/5.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/6.jpg"/>
 
-<h4 align="center">User Chats List Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Chat Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Comments Screen</h4>
+<h4 align="center">User Chats List Screen  |  Chat Screen  |  Comments Screen</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/7.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/8.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/9.jpg"/>
 
-<h4 align="center">Create Post Screen &nbsp&nbsp&nbsp&nbsp | &nbsp&nbsp&nbsp&nbsp Notification on new message</h4>
+<h4 align="center">Create Post Screen  |  Notification on new message</h4>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/10.jpg"/>
 <img height=480 width=240 style="margin: 10px;" src="https://raw.githubusercontent.com/shahshubh/SocialApp-React-Native/master/screenshots/11.jpg"/>
 

@@ -13,7 +13,7 @@ Social Networking mobile app similar to Instagram in React Native.
 <br/>Find its Github repo  <a href='https://github.com/shahshubh/socialApp-MERN'>here</a>
 
 
-## Download Apk File from <a href='https://socialapp-serverr.herokuapp.com/static/socialapp-rn-2.apk'>here</a>
+## Download Apk File from <a href='https://drive.google.com/file/d/1vNc40ggbuOm3wJ471ma-r83TxzUR4e1s/view'>here</a>
 
 
 ## Features
